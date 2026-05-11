@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5><i class="nc-icon nc-circle-10"></i>　顧客詳細画面</h5>
+        </div>
+        <div class="card-body">
+          あああ
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block javascript %}
+
+<script>
+  
+$(document).ready(function() {
+  //add active class for selected in side bar
+  $('li.attack_list').addClass('active');
+  $('li.attack_list').children('a').attr('aria-expanded', 'true');
+  $('#attackList').addClass('show');
+  sidebar.addActiveClass("{% url 'gis:customer_detail' %}");
+
+});
+
+</script>
+
+
+{% endblock javascript %}

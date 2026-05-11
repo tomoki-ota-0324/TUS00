@@ -1,0 +1,47 @@
+{% extends 'base_for_map.html' %}
+{% load static i18n %}
+
+{% block content %}
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div id="map"></div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+<!-- <script>
+  $(document).ready(function() {
+    demo.initSmallGoogleMaps();
+
+    //add active class for selected in side bar
+    $('li.maps').addClass('active');
+    sidebar.addActiveClass("{% url 'gis:maps' %}");
+
+  });
+</script> -->
+
+<script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      demo.initGoogleMaps();
+  
+      //delete footer
+      $('footer').remove();
+  
+      //change nav color
+      // $('body').addClass('full-screen-map');
+      // $('nav.navbar.navbar-expand-lg').after('<div class="panel-header panel-header-sm"></div>')
+  
+      //add active class for selected in side bar
+      $('li.maps').addClass('active');
+      $('li.maps').children('a').attr('aria-expanded', 'true');
+      $('#mapsExamples').addClass('show');
+      sidebar.addActiveClass("{% url 'gis:large_maps' %}");
+  
+    }); //document.ready
+  </script>
+{% endblock javascript %}
+

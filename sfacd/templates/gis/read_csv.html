@@ -1,0 +1,50 @@
+{% extends 'account_base.html' %}
+{% load static i18n %}
+
+{% block content %}
+
+<div class="content" style="height: 100vh;">
+  <div class="container">
+    <div class="col-lg-4 col-md-6 ml-auto mr-auto">
+      <form method="POST" action="{% url 'gis:read_csv' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card card-login">
+          <div class="card-header ">
+            <div class="card-header ">
+              <h3 class="header text-center">顧客データCSV読込</h3>
+            </div>
+          </div>
+          <div class="card-body ">
+            <p>本機能を使ってのデータ取込みには</br>長時間を要します。</br>データ取込みはLTS経由で実施してください。</p>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="customFile" name="file" accept=".csv">
+              <label class="custom-file-label" for="customFile">I-CROP-Jの車両汎用抜出CSVを選択</label>
+            </div>
+            <p>処理が終了すると、</br>処理経過がテキストファイルとして、</br>自動的にダウンロードされます。</p>
+            <p>処理中にエラーが発生していることがあります。</br>出力されるテキストファイルをご確認ください。</p>
+          </div>
+          <div class="card-footer ">
+            <button type="submit" class="btn btn-warning btn-round btn-block mb-3">読込開始</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block javascript %}
+<script>
+
+//ファイルが選択されたときに選択されたファイル名を表示
+$(document).on('change', ':file', function() {
+  console.log('aaa');
+  var input = $(this),
+  numFiles = input.get(0).files ? input.get(0).files.length : 1,
+  label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+  $('label.custom-file-label').text(label);
+});
+
+</script>
+{% endblock javascript %}

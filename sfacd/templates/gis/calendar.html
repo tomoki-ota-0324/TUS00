@@ -1,0 +1,34 @@
+{% extends 'base.html' %} <!-- base.htmlを取り込む -->
+{% load static i18n %} <!-- staticタグの読込とi18nの読込 -->
+
+{% block content %}
+
+<!-- <div class="panel-header">
+  <div class="header text-center">
+    <h2 class="title">FullCalendar.io</h2>
+    <p class="category">Handcrafted by our friends from <a target="_blank" href="https://fullcalendar.io/">FullCalendar.io</a>. Please checkout their <a href="https://fullcalendar.io/docs/" target="_blank">full documentation</a>.</p>
+  </div>
+</div> -->
+<div class="content">
+  <div class="row">
+    <div class="col-md-10 ml-auto mr-auto">
+      <div class="card card-calendar">
+        <div class="card-body ">
+          <div id="fullCalendar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+<script>
+  $(document).ready(function() {
+    demo.initFullCalendar();
+
+    //add active class for selected in side bar
+		$('li.calendar').addClass('active');
+  });
+</script>
+{% endblock javascript %}

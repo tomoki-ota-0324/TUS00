@@ -1,0 +1,2917 @@
+{% extends 'base_for_map.html' %}
+{% load static i18n %}
+
+{% block content %}
+<div id="map" class="map-container"></div>
+<!-- <div id="legend"><h6>凡例</h6></div> -->
+<div id="legend" class="legend-hide">
+  <h6>凡例</h6>
+</div>
+<div id="customerDistribution" class="legend-hide">
+  <div class="card card-customer-distribution">
+    <!-- ここにjQueryでDOM追加 -->
+  </div>
+</div>
+<div id="unit" class="legend-hide">
+  <h6>DATA</h6>
+</div>
+<div id="custCount" class="legend-hide">
+  <h6>顧客カウント</h6>
+</div>
+
+{% endblock content %}
+
+{% block modal %}
+<!-- CustomerCount Modal -->
+<!-- STT KINTO 20190619 ADD -->
+<div class="modal fade" id="CustomerCountModal" tabindex="-1" role="dialog" aria-labelledby="CustomerCountModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="CustomerCountModalLabel">商圏別顧客分布</h5>
+      </div>
+      <div class="modal-body CustomerCount">
+        <div class="row">
+          総入庫台数：<div id="tempo_cust_total">9999</div>　
+        </div>
+        <div class="row">
+          対象商圏内入庫台数：<div id="tempo_cust_area_total">9999</div>　　
+        </div>
+        <div class="row">
+          <div class="">
+            <table class="table" id="custMatrixtable">
+              <thead class="">
+                <th align="center" id="1_tempo_matrix_name">
+                  商圏
+                </th>
+                <th align="center" id="1_tempo_area_name_r_x">
+                  商圏内総数<br /><small>上段&nbsp;入庫台数</small><br /><small>下段&nbsp;重複率</small>
+                </th>
+                <th align="center" id="1_tempo_area_name_r_0">
+                  x商圏名0(店舗名）
+                </th>
+                <th align="center" id="1_tempo_area_name_r_1">
+                  x商圏名1(店舗名）
+                </th>
+                <th align="center" id="1_tempo_area_name_r_2">
+                  x商圏名2(店舗名）
+                </th>
+                <th align="center" id="1_tempo_area_name_r_3">
+                  x商圏名3(店舗名）
+                </th>
+                <th align="center" id="1_tempo_area_name_r_4">
+                  x商圏名4(店舗名）
+                </th>
+              </thead>
+              <tbody>
+                <tr id="tempo_r0">
+                  <th align="left" scope="row" id="1_tempo_area_name_c_0">
+                    y商圏名0(店舗名）
+                  </th>
+                  <td align="right" id="1_cust_total_r0_x">
+                    999
+                  </td>
+                  <td align="right" id="1_cust_total_r0_0">
+                    １×１
+                  </td>
+                  <td align="right" id="1_cust_total_r0_1">
+                    １×２
+                  </td>
+                  <td align="right" id="1_cust_total_r0_2">
+                    １×３
+                  </td>
+                  <td align="right" id="1_cust_total_r0_3">
+                    １×４
+                  </td>
+                  <td align="right" id="1_cust_total_r0_4">
+                    １×５
+                  </td>
+                </tr>
+                <tr id="tempo_r1">
+                  <th align="left" scope="row" id="1_tempo_area_name_c_1">
+                    y商圏名1(店舗名）
+                  </th>
+                  <td align="right" id="1_cust_total_r1_x">
+                    999
+                  </td>
+                  <td align="right" id="1_cust_total_r1_0">
+                    ２×１
+                  </td>
+                  <td align="right" id="1_cust_total_r1_1">
+                    ２×２
+                  </td>
+                  <td align="right" id="1_cust_total_r1_2">
+                    ２×３
+                  </td>
+                  <td align="right" id="1_cust_total_r1_3">
+                    ２×４
+                  </td>
+                  <td align="right" id="1_cust_total_r1_4">
+                    ２×５
+                  </td>
+                </tr>
+                <tr id="tempo_r2">
+                  <th align="left" scope="row" id="1_tempo_area_name_c_2">
+                    y商圏名2(店舗名）
+                  </th>
+                  <td align="right" id="1_cust_total_r2_x">
+                    999
+                  </td>
+                  <td align="right" id="1_cust_total_r2_0">
+                    ３×１
+                  </td>
+                  <td align="right" id="1_cust_total_r2_1">
+                    ３×２
+                  </td>
+                  <td align="right" id="1_cust_total_r2_2">
+                    ３×３
+                  </td>
+                  <td align="right" id="1_cust_total_r2_3">
+                    ３×４
+                  </td>
+                  <td align="right" id="1_cust_total_r2_4">
+                    ３×５
+                  </td>
+                </tr>
+                <tr id="tempo_r3">
+                  <th align="left" scope="row" id="1_tempo_area_name_c_3">
+                    y商圏名3(店舗名）
+                  </th>
+                  <td align="right" id="1_cust_total_r3_x">
+                    999
+                  </td>
+                  <td align="right" id="1_cust_total_r3_0">
+                    ４×１
+                  </td>
+                  <td align="right" id="1_cust_total_r3_1">
+                    ４×２
+                  </td>
+                  <td align="right" id="1_cust_total_r3_2">
+                    ４×３
+                  </td>
+                  <td align="right" id="1_cust_total_r3_3">
+                    ４×４
+                  </td>
+                  <td align="right" id="1_cust_total_r3_4">
+                    ４×５
+                  </td>
+                </tr>
+                <tr id="tempo_r4">
+                  <th align="left" scope="row" id="1_tempo_area_name_c_4">
+                    y商圏名4(店舗名）
+                  </th>
+                  <td align="right" id="1_cust_total_r4_x">
+                    999
+                  </td>
+                  <td align="right" id="1_cust_total_r4_0">
+                    ５×１
+                  </td>
+                  <td align="right" id="1_cust_total_r4_1">
+                    ５×２
+                  </td>
+                  <td align="right" id="1_cust_total_r4_2">
+                    ５×３
+                  </td>
+                  <td align="right" id="1_cust_total_r4_3">
+                    ５×４
+                  </td>
+                  <td align="right" id="1_cust_total_r4_4">
+                    ５×５
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+          <small>※同一商圏同士の重複セルの値は、その商圏のみでカバーしている入庫数</small>　　
+        </div>
+        <!-- append HTML here to use jQuery -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+        <button type="button" class="btn btn-primary" id="customerCountDlBtn" data-dismiss="modal">ダウンロード</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- STT KINTO 20190619 END -->
+<!-- Layer Modal -->
+<div class="modal" id="layerModal" tabindex="-1" role="dialog" aria-labelledby="layerModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <!-- <button type="button" class="close" id="resetLayerSelect">
+          <span><i class="nc-icon nc-refresh-69"></i></span>
+        </button> -->
+        <h5 class="modal-title" id="layerModalLabel">レイヤー作成</h5>
+      </div>
+      <div class="modal-body layer">
+        <div class="row">
+          <label class="col-sm-3 col-form-label">レイヤーの種類選択</label>
+          <div class="col-sm-9 checkbox-radios">
+            <div class="form-check-radio form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="layerRadioz" id="layerRadios1" value="1">
+                市区町村／町丁字等別(2020年国勢調査)
+                <span class="form-check-sign"></span>
+              </label>
+            </div>
+            <div class="form-check-radio form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="layerRadioz" id="layerRadios5" value="5">
+                行政区域別(2021年県統計)
+                <span class="form-check-sign"></span>
+              </label>
+            </div>
+            <div class="form-check-radio form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="layerRadioz" id="layerRadios2" value="2">
+                500Mメッシュ(2020年国勢調査)
+                <span class="form-check-sign"></span>
+              </label>
+            </div>
+            <div class="form-check-radio form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="layerRadioz" id="layerRadios3" value="3"> 現在の交通状況
+                <span class="form-check-sign"></span>
+              </label>
+            </div>
+            <div class="form-check-radio form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="layerRadioz" id="layerRadios4" value="4"> テリトリーエリア
+                <span class="form-check-sign"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- append HTML here to use jQuery -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+        <button type="button" class="btn btn-danger" id="layerDeleteBtn" data-dismiss="modal">削除</button>
+        <button type="button" class="btn btn-primary" id="layerBtn" data-dismiss="modal">作成</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Customer Modal -->
+<div class="modal" id="customerModal" tabindex="-1" role="dialog" aria-labelledby="customerModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <button type="button" class="close" id="resetSelect">
+          <span><i class="nc-icon nc-refresh-69"></i></span>
+        </button>
+        <h5 class="modal-title" id="customerModalLabel">顧客の表示</h5>
+      </div>
+      <div class="modal-body marker">
+        <br />
+        <h6 class="card-subtitle mb-2 text-muted">共通項目</h6>
+        <div class="row">
+          <label class="col-sm-3 col-form-label">顧客の管轄選択</label>
+          <div class="col-lg-3 col-md-6 col-sm-8">
+            <select class="selectpicker" data-style="btn btn-info btn-round" multiple title="店舗で絞込み" data-size="7"
+              id="selectShops">
+              <option disabled> 複数選択可</option>
+              {% for shop in shops %}
+              <option value="{{shop.id}}">{{shop.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <!-- スタッフによる絞り込み表示は現在データが整備されていないので利用させない -->
+          <!-- <div class="col-lg-3 col-md-6 col-sm-8">
+            <select class="selectpicker" data-style="btn btn-info btn-round" multiple title="スタッフで絞込み" data-size="7"
+              id="selectStaff">
+              <option disabled> 店舗を選択してください</option>
+              <option value=""></option>
+            </select>
+          </div> -->
+        </div>
+        <div class="row">
+          <label class="col-sm-3 col-form-label">店舗位置の表示</label>
+          <!-- <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="show_shop" id="newShop" value="1" checked>
+                <span class="form-check-sign"></span>
+                新車店舗
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="show_shop" value="2">
+                <span class="form-check-sign"></span>
+                U-Car店舗
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="show_shop" value="0">
+                <span class="form-check-sign"></span>
+                LEXUS店舗
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="show_shop" value="3" checked>
+                <span class="form-check-sign"></span>
+                トヨペット店舗
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="show_shop" value="4">
+                <span class="form-check-sign"></span>
+                カローラ店舗
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="show_shop" value="5">
+                <span class="form-check-sign"></span>
+                ネッツ店舗
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="show_shop" value="6">
+                <span class="form-check-sign"></span>
+                候補地
+              </label>
+            </div>
+          </div> -->
+          <div class="col-lg-3 col-md-6 col-sm-8">
+            <select class="selectpicker" data-style="btn btn-info btn-round" multiple title="表示店舗選択" data-size="7"
+              id="showShops">
+              <option disabled> 複数選択可</option>
+              {% for shop in shops %}
+              <option value="{{shop.id}}">{{shop.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-3 col-form-label">候補地の表示</label>
+          <div class="col-lg-3 col-md-6 col-sm-8">
+            <select class="selectpicker" data-style="btn btn-info btn-round" multiple title="表示候補地選択" data-size="7"
+              id="showOtherShops">
+              <option disabled> 複数選択可</option>
+              {% for shop in other_shops %}
+              <option value="{{shop.id}}">{{shop.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="row" id="show_area">
+          <label class="col-sm-3 col-form-label">商圏範囲の表示</label>
+          <div class="col-sm-9 checkbox-radios">
+            <div class="form-check-radio form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="areaRadioz" id="areaRadios1" value="1" checked="">
+                同心円距離範囲(店舗位置の表示選択店舗のみ表示)
+                <span class="form-check-sign"></span>
+              </label>
+            </div>
+            <div class="form-check-radio form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="areaRadioz" id="areaRadios2" value="2">
+                車両運転時到達圏(顧客の管轄選択店舗のみ表示)
+                <span class="form-check-sign"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row" id="select_area">
+          <label class="col-sm-3 col-form-label">同心円距離範囲</label>
+          <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="areaBox" id="circle3" value="3000" checked>
+                <span class="form-check-sign"></span>
+                半径3Km
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="areaBox" value="6000">
+                <span class="form-check-sign"></span>
+                半径6Km
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="areaBox" value="10000">
+                <span class="form-check-sign"></span>
+                半径10Km
+              </label>
+            </div>
+          </div>
+        </div>
+        <br />
+        <hr />
+        <br />
+        <h6 class="card-subtitle mb-2 text-muted">顧客属性</h6>
+        <br />
+        <div class="row">
+          <label class="col-sm-3 col-form-label">顧客層別</label>
+          <div class="col-sm-9">
+            {% for rank in ranks %}
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="giscustomer_customer_rank" value="{{rank.id}}">
+                <span class="form-check-sign"></span>
+                {{rank.rank}}層
+              </label>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-3 col-form-label">性区分</label>
+          <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="sex" value="1">
+                <span class="form-check-sign"></span>
+                男性
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="sex" value="2">
+                <span class="form-check-sign"></span>
+                女性
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="sex" value="3">
+                <span class="form-check-sign"></span>
+                法人
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="sex" value="9">
+                <span class="form-check-sign"></span>
+                不明
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-3 col-form-label">顧客固定客</label>
+          <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="customer_fixed_kind" value="0">
+                <span class="form-check-sign"></span>
+                一般客
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="customer_fixed_kind" value="1">
+                <span class="form-check-sign"></span>
+                新車客
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="customer_fixed_kind" value="2">
+                <span class="form-check-sign"></span>
+                準固定客
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="customer_fixed_kind" value="3">
+                <span class="form-check-sign"></span>
+                固定客
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="customer_fixed_kind" value="9">
+                <span class="form-check-sign"></span>
+                不明
+              </label>
+            </div>
+          </div>
+        </div>
+        <br />
+        <hr />
+        <br />
+        <h6 class="card-subtitle mb-2 text-muted">車両属性</h6>
+        <br />
+        <div class="row">
+          <label class="col-sm-3 col-form-label">車両型式</label>
+          <div class="col-lg-4 col-sm-9">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="型式" name="car_model">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-3 col-form-label">新中</label>
+          <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="sale_flg" value="1">
+                <span class="form-check-sign"></span>
+                新車
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="sale_flg" value="2">
+                <span class="form-check-sign"></span>
+                中古車
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="sale_flg" value="9">
+                <span class="form-check-sign"></span>
+                不明
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-3 col-form-label">車両層別</label>
+          <div class="col-sm-9">
+            {% for rank in ranks %}
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="giscustomer_cars_rank" value="{{rank.id}}">
+                <span class="form-check-sign"></span>
+                {{rank.rank}}層
+              </label>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-3 col-form-label">車両固定客</label>
+          <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="car_fixed_kind" value="0">
+                <span class="form-check-sign"></span>
+                一般客
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="car_fixed_kind" value="1">
+                <span class="form-check-sign"></span>
+                新車客
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="car_fixed_kind" value="2">
+                <span class="form-check-sign"></span>
+                準固定客
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="car_fixed_kind" value="3">
+                <span class="form-check-sign"></span>
+                固定客
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="car_fixed_kind" value="9">
+                <span class="form-check-sign"></span>
+                不明
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-3 col-form-label">車両サービス店舗選択</label>
+          <div class="col-lg-3 col-md-6 col-sm-8">
+            <select class="selectpicker" data-style="btn btn-info btn-round" multiple title="店舗で絞込み" data-size="7"
+              id="serviceShops">
+              <option disabled> 複数選択可</option>
+              {% for shop in shops %}
+              <option value="{{shop.id}}">{{shop.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+        <button type="button" class="btn btn-danger" id="markerDeleteBtn" data-dismiss="modal">削除</button>
+        <button type="button" class="btn btn-primary" id="customerBtn" data-dismiss="modal">作成</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Shop Detail Modal -->
+<div class="modal" id="ShopDetailModal" tabindex="-1" role="dialog" aria-labelledby="ShopDetailModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <!-- <button type="button" class="close" id="resetLayerSelect">
+          <span><i class="nc-icon nc-refresh-69"></i></span>
+        </button> -->
+        <h5 class="modal-title" id="ShopDetailModalLabel">店舗基本情報</h5>
+      </div>
+      <p class="mb-0 text-right" style="font-size: 12px;">※データの確認が可能です。編集は管理サイトにて行ってください。</p>
+      <div class="modal-body shop">
+        <form>
+          <div class="row">
+            <div class="col-md-5 pr-1">
+              <div class="form-group">
+                <label>店舗名</label>
+                <input type="text" class="form-control" disabled="" placeholder="店舗名" name="shop_name">
+              </div>
+            </div>
+            <div class="col-md-3 px-1">
+              <div class="form-group">
+                <label>開設年月</label>
+                <input type="text" class="form-control" disabled="" placeholder="開設年月" name="open_year_month">
+              </div>
+            </div>
+            <div class="col-md-4 pl-1">
+              <div class="form-group">
+                <label for="exampleInputEmail1">築年数(年)</label>
+                <input type="number" class="form-control" disabled="" placeholder="築年数" name="build_year">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 pr-1">
+              <div class="form-group">
+                <label>電話番号</label>
+                <input type="text" class="form-control" disabled="" placeholder="電話番号" name="tel_num">
+              </div>
+            </div>
+            <div class="col-md-6 pl-1">
+              <div class="form-group">
+                <label>郵便番号</label>
+                <input type="text" class="form-control" disabled="" placeholder="郵便番号" name="post_code">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>住所</label>
+                <input type="text" class="form-control" disabled="" placeholder="住所" name="address">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>特記事項</label>
+                <textarea rows="1" cols="10" disabled="" class="form-control textarea" name="notices"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>自社面積(㎡)</label>
+                <input type="number" step="0.01" class="form-control" disabled="" placeholder="自社面積(㎡)"
+                  name="shop_area_square_meter">
+              </div>
+            </div>
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>自社面積(坪)</label>
+                <input type="number" step="0.01" class="form-control" disabled="" placeholder="自社面積(坪)"
+                  name="shop_area_tsubo">
+              </div>
+            </div>
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>賃借面積(㎡)</label>
+                <input type="number" step="0.01" class="form-control" disabled="" placeholder="賃借面積(㎡)"
+                  name="chinshaku_area_square_meter">
+              </div>
+            </div>
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>賃借面積(坪)</label>
+                <input type="number" step="0.01" class="form-control" disabled="" placeholder="賃借面積(坪)"
+                  name="chinshaku_area_tsubo">
+              </div>
+            </div>
+            <div class="col-md-3 pr-1">
+              <div class="form-group">
+                <label>土地賃料月額(千円)</label>
+                <input type="number" class="form-control" disabled="" placeholder="土地賃料月額(千円)" name="place_rent">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>建築面積(㎡)</label>
+                <input type="number" step="0.01" class="form-control" disabled="" placeholder="建築面積(㎡)"
+                  name="building_area_square_meter">
+              </div>
+            </div>
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>建築面積(坪)</label>
+                <input type="number" step="0.01" class="form-control" disabled="" placeholder="建築面積(坪)"
+                  name="building_area_tsubo">
+              </div>
+            </div>
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>延床面積(㎡)</label>
+                <input type="number" step="0.01" class="form-control" disabled="" placeholder="延床面積(㎡)"
+                  name="total_floor_area_square_meter">
+              </div>
+            </div>
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>延床面積(坪)</label>
+                <input type="number" step="0.01" class="form-control" disabled="" placeholder="延床面積(坪)"
+                  name="total_floor_area_tsubo">
+              </div>
+            </div>
+            <div class="col-md-3 pr-1">
+              <div class="form-group">
+                <label>建物賃料月額（千円）</label>
+                <input type="number" class="form-control" disabled="" placeholder="建物賃料月額(千円)" name="building_rent">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3 pr-1">
+              <div class="form-group">
+                <label>用途地域</label>
+                <input type="text" class="form-control" disabled="" placeholder="用途地域" name="youto_chiiki">
+              </div>
+            </div>
+            <div class="col-md-3 pr-1">
+              <div class="form-group">
+                <label>工場面積(㎡)</label>
+                <input type="number" step="0.01" class="form-control" disabled="" placeholder="工場面積(㎡)"
+                  name="factory_area_square_meter">
+              </div>
+            </div>
+            <div class="col-md-3 pr-1">
+              <div class="form-group">
+                <label>工場認可</label>
+                <input type="text" class="form-control" disabled="" placeholder="工場認可" name="factory_auth">
+              </div>
+            </div>
+            <div class="col-md-3 pr-1">
+              <div class="form-group">
+                <label>ストール数(機)</label>
+                <input type="number" class="form-control" disabled="" placeholder="ストール数" name="stalls">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>店舗人員総数(人)</label>
+                <input type="number" class="form-control" disabled="" placeholder="店舗人員総数(人)" name="total_shop_menber">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>店長・GM</label>
+                <input type="number" class="form-control" disabled="" placeholder="店長・GM" name="store_manager">
+              </div>
+            </div>
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>副店長</label>
+                <input type="number" class="form-control" disabled="" placeholder="副店長" name="vice_store_manager">
+              </div>
+            </div>
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>営業TM</label>
+                <input type="number" class="form-control" disabled="" placeholder="営業TM" name="TM">
+              </div>
+            </div>
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>QA・SC</label>
+                <input type="number" class="form-control" disabled="" placeholder="QA・SC" name="QA_SC">
+              </div>
+            </div>
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>STM</label>
+                <input type="number" class="form-control" disabled="" placeholder="STM" name="STM">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>SAD・TM</label>
+                <input type="number" class="form-control" disabled="" placeholder="SAD・TM" name="SAD_TM">
+              </div>
+            </div>
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>EL・WSL</label>
+                <input type="number" class="form-control" disabled="" placeholder="EL・WSL" name="EL_WSL">
+              </div>
+            </div>
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>SE・TS</label>
+                <input type="number" class="form-control" disabled="" placeholder="SE・TS" name="SE_TS">
+              </div>
+            </div>
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>FC・RS</label>
+                <input type="number" class="form-control" disabled="" placeholder="FC・RS" name="FC_RS">
+              </div>
+            </div>
+            <div class="col-md-2 pr-1">
+              <div class="form-group">
+                <label>その他</label>
+                <input type="number" class="form-control" disabled="" placeholder="その他" name="others">
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="">
+              <th>
+                営業実績
+              </th>
+              <th>
+                Y-3年度
+              </th>
+              <th>
+                Y-2年度
+              </th>
+              <th>
+                Y-1年度
+              </th>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">
+                  お客様数(人)
+                </th>
+                <td id="y_3_customer">
+                  人
+                </td>
+                <td id="y_2_customer">
+                  人
+                </td>
+                <td id="y_1_customer">
+                  人
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  SA層比率(％)
+                </th>
+                <td id="y_3_sa">
+                  ％
+                </td>
+                <td id="y_2_sa">
+                  ％
+                </td>
+                <td id="y_1_sa">
+                  ％
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  新車販売(台)
+                </th>
+                <td id="y_3_new_car">
+                  台
+                </td>
+                <td id="y_2_new_car">
+                  台
+                </td>
+                <td id="y_1_new_car">
+                  台
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  U-Car販売(台)
+                </th>
+                <td id="y_3_u_car">
+                  台
+                </td>
+                <td id="y_2_u_car">
+                  台
+                </td>
+                <td id="y_1_u_car">
+                  台
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  総整備台数(台)
+                </th>
+                <td id="y_3_fix_car">
+                  台
+                </td>
+                <td id="y_2_fix_car">
+                  台
+                </td>
+                <td id="y_1_fix_car">
+                  台
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  車検台数(台)
+                </th>
+                <td id="y_3_inspection">
+                  台
+                </td>
+                <td id="y_2_inspection">
+                  台
+                </td>
+                <td id="y_1_inspection">
+                  台
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <form>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>近隣店舗・P</label>
+                <textarea rows="1" cols="10" disabled="" class="form-control textarea"
+                  name="close_store_P">近隣店舗・P</textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>近隣店舗・C</label>
+                <textarea rows="1" cols="10" disabled="" class="form-control textarea"
+                  name="close_store_C">近隣店舗・C</textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>近隣店舗・N</label>
+                <textarea rows="1" cols="10" disabled="" class="form-control textarea"
+                  name="close_store_N">近隣店舗・N</textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>備考</label>
+                <textarea rows="2" cols="20" disabled="" class="form-control textarea"
+                  name="remarks">建築制限有無、地主との特記事項、諸問題の有無（地盤に問題　他）等</textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>店舗の将来像(今後の方向性・ありたい姿)</label>
+                <textarea rows="3" cols="60" disabled="" class="form-control textarea" name="feature_store"></textarea>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- append HTML here to use jQuery -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock modal %}
+
+{% block javascript %}
+<script>
+  $(document).ready(function () {
+    // Javascript method's body can be found in assets/js/demos.js
+    // demo.initGoogleMaps();
+
+    //add active class for selected in side bar
+    $('li.maps').addClass('active');
+    $('li.maps').children('a').attr('aria-expanded', 'true');
+    $('#mapsExamples').addClass('show');
+    sidebar.addActiveClass("{% url 'gis:large_maps' %}");
+
+    // change staff list in modal
+    $('#selectShops').change(function () {
+      var val = $(this).val();
+      $('#selectStaff').children().remove(); //全option削除 モーダル内を削除
+      $('.selectpicker').selectpicker('refresh'); //pickerプラグインのリセット
+      createStaffList(val);
+    });
+
+    // init google map
+    {% if current_shop.shop_flg == 1 %}
+    var lat = {{ current_shop.lat }
+  };
+  var lng = {{ current_shop.lng }};
+  initMap(center = { lat: lat, lng: lng });
+  {% else %}
+  initMap(center = { lat: 34.9869363, lng: 138.4111456 });
+  {% endif %}
+
+  // レイヤーモーダル選択肢を変更させる
+  changeSelectLayer();
+
+  //マーカー作成モーダルの選択肢を変更させる
+  changeSelectMarker();
+
+  //凡例の表示切替
+  document.getElementById('toggleLegend').addEventListener('click', function () {
+    toggleLegend();
+  });
+
+  //STT TEST_KINTO 商圏別顧客数の表示切替 (202207)モーダルでなく地図内表示に切り替えのため未使用
+  // document.getElementById('showCustomerCount').addEventListener('click', function () {
+  //   var stat = showCustomerCount();
+  // });
+  //END TEST_KINTO 商圏別顧客数の表示切替
+
+  // 印刷ボタンが押された時
+  document.getElementById('printBtn').addEventListener('click', function () {
+    printAnyMaps();
+  });
+
+  // 商圏別顧客数をマップ内に表示するDOMの初期設定
+  var legendEle = document.getElementsByClassName('card card-customer-distribution');
+  domObject = $(cardOfCustomerDistribution);
+  domObject.appendTo(legendEle);
+
+}); //document.ready
+
+
+  // 凡例の表示、非表示切替
+  function toggleLegend() {
+    // TODO: toggleで表示非表示を切り替えているだけなので、タイミングによっては、凡例の表示非表示がまとまらないことがある
+    $('#legend').toggle();
+    $('#unit').toggle();
+    $('#customerDistribution').toggle();
+  }
+
+  //選択店舗所属のスタッフリストを返す
+  function createStaffList(val) {
+    dispLoading("処理中...");
+    $.ajax({
+      type: "POST",
+      url: "{% url 'gis:create_user_list' %}",
+      data: {
+        shops: val,
+      },
+      dataType: "json",
+    }).done(function (data) {
+      // console.log($('#selectStaff option'));
+      if (data.length < 1) {
+        $('#selectStaff').append('<option disabled> 店舗を選択してください</option>');
+      } else {
+        $('#selectStaff').append('<option disabled> 複数選択可</option>');
+      }
+      // console.log(data);
+      for (var i = 0; i < data.length; i++) {
+        $('#selectStaff').append('<option value="' + data[i].pk + '">' + data[i].fields.name + '</option>')
+      }
+      // console.log($('#selectStaff option'));
+      $('.selectpicker').selectpicker('refresh'); //pickerプラグインのリセット
+    }).always(function () {
+      removeLoading();
+    });
+  }
+
+  // change select option in marker modal
+  function changeSelectMarker() {
+    $(document).on('change', 'input[name="areaRadioz"]', function () {
+      var val = $(this).val();
+      // console.log(val);
+      $("#select_area").remove();
+      if (val == "1") {
+        $('#show_area').after(circleArea);
+      } else if (val == "2") {
+        $('#show_area').after(driveArea);
+      }
+    });
+  }
+
+  // change select option in layer modal
+  function changeSelectLayer() {
+    $('input[name="layerRadioz"]').change(function () {
+      $(this).parents('div.row').nextAll().remove();
+      var val = $(this).val();
+      // console.log(val);
+      if (val == "1") { //市区町村を選択
+        $('div.modal-body.layer').append(dataSelect);
+      } else if (val == "2") { //500メッシュを選択
+        $('div.modal-body.layer').append(dataSelect);
+      } else if (val == "3") { //交通状況を選択
+        $('div.modal-body.layer').append(hideSelect);
+      } else if (val == "4") { //テリトリーエリア選択
+        $('div.modal-body.layer').append(hideSelect);
+      } else if (val == "5") { //行政区域選択
+        $('div.modal-body.layer').append(ageSelect);
+      } else {
+        console.log("error in add select 1");
+      }
+    });
+
+    //レイヤーの統計データ選択が変更されたときに、データ属性を表示させる処理
+    $(document).on('change', 'input[name="dataRadioz"]', function () {
+      $(this).parents('div.row').nextAll().remove();
+      var val = $(this).val();
+      var layer_val = $('input[name="layerRadioz"]:checked').val();
+      if (layer_val == "1") {
+        if (val == "1") { //市区町村でかつ年齢別を選択
+          $('div.modal-body.layer').append(cityAgeSelect);
+        } else if (val == "2") { //市区町村かつ世帯別を選択
+          $('div.modal-body.layer').append(citySetaiSelect);
+        } else if (val == "3") { //市区町村かつ車種別を選択
+
+        } else {
+          console.log("error in add select 2");
+        }
+      } else if (layer_val == "2") {
+        if (val == "1") { //メッシュかつ年齢別を選択
+          $('div.modal-body.layer').append(meshAgeSelect);
+        } else if (val == "2") { //メッシュかつ世帯別を選択
+          $('div.modal-body.layer').append(meshSetaiSelect);
+        } else {
+          console.log("error in add select 2");
+        }
+      } else if (layer_val == "5") {
+        $('div.modal-body.layer').append(perAgeSelect);
+      } else {
+        console.log("error in add select 3");
+      }
+    });
+
+    //顧客マーカー作成モーダルの全選択肢をリセットする 右上のリセットボタンを押したとき
+    $('#resetSelect').on('click', function () {
+      // console.log('発火');
+      resetCustomerModalSelect();
+    });
+
+    //リセットボタンを押したときに、レイヤー作成モーダル内の選択肢をリセット　ただしDATA枠内のデータが正しく表示されないので現在不使用
+    // $('#resetLayerSelect').on('click', function() {
+    //   resetLayerModalSelect();
+    // });
+  }
+</script>
+
+<script src="{% static 'js/variable.js' %}"></script>
+
+<script>
+  // Note: This example requires that you consent to location sharing when
+  // prompted by your browser. If you see the error "The Geolocation service
+  // failed.", it means you probably did not give permission for the browser to
+  // locate you.
+
+  //定数
+  // var ageLayer = "{% static 'geojson/age.geojson' %}"; //年齢別レイヤー
+  var ageLayer = "{% static 'geojson/new_age.geojson' %}"; //年齢別レイヤー
+  // var setaiLayer = "{% static 'geojson/setai.geojson' %}"; //世帯別レイヤー
+  var setaiLayer = "{% static 'geojson/new_setai.geojson' %}"; //世帯別レイヤー
+
+  var meshAgeLayer = "{% static 'geojson/mesh_age.geojson' %}"; //年齢別メッシュレイヤー
+  var meshSetaiLayer = "{% static 'geojson/mesh_setai.geojson' %}"; //世帯別メッシュレイヤー
+  var territoryLayer = "{% static 'geojson/territory.geojson' %}"; //テリトリーレイヤー
+  var perAgeTotalLayer = "{% static 'geojson/gyouseiku_age.geojson' %}"; //行政区域各年齢レイヤー
+  var perAgeRatioLayer = "{% static 'geojson/age_12_ratio.geojson' %}"; //行政区域地域内総人口からの指定年齢人口割合　現在不使用
+  var perAgeDeviationLayer = "{% static 'geojson/age_12_deviation.geojson' %}"; //行政区地域内総人口からの指定年齢人口の偏差値　現在不使用
+  var carLayer = ""; //現在の交通情報のための空
+  var toyopetMarker = "{% static 'images/marker/toyopet.png' %}"; //トヨペット店舗マーカー画像
+  var corollaMarker = "{% static 'images/marker/corolla.png' %}"; //カローラ店舗マーカー画像
+  var netzMarker = "{% static 'images/marker/netz.png' %}"; //ネッツ店舗マーカー画像
+  var optionSiteMarker = "{% static 'images/marker/star.png' %}"; //候補地店舗マーカー画像
+  var othersMarker = "{% static 'images/marker/toyota2.png' %}"; //その他・不明マーカー画像
+
+  //　デフォルト地図 IEではデフォルト引数が使えないので注意
+  function initMap(center) {
+    var zoom = 14;
+    //ルート案内表示インスタンス
+    // var directionsService = new google.maps.DirectionsService();
+    // var directionsDisplay = new google.maps.DirectionsRenderer();
+
+    //マップインスタンス生成
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: center, //中心地
+      zoom: zoom, //ズーム値
+      mapTypeId: 'defaultMap', //デフォルトで表示する地図タイプ
+      mapTypeControl: true, //地図コントロールが表示されるよう明示
+      mapTypeControlOptions: { //ユーザーが選択できる地図タイプ
+        mapTypeIds: [
+          // google.maps.MapTypeId.ROADMAP,
+          'defaultMap',
+          'onlyRoad',
+          'placeOfChild'
+        ]
+      }
+    });
+
+    // 文字列と地図タイプの関連付け
+    map.mapTypes.set('defaultMap', defaultMap);
+    map.mapTypes.set('onlyRoad', onlyRoad);
+    map.mapTypes.set('placeOfChild', placeOfChild);
+
+    //レイヤー作成ボタンを押したとき
+    document.getElementById('layerBtn').addEventListener('click', function () {
+      var layer_kind = $('input[name="layerRadioz"]:checked').val(); //レイヤーの種類
+      var layer_data = $('input[name="dataRadioz"]:checked').val(); //統計データ
+      var select_age = $('input[name="attrRadioz"]:checked').val(); //年齢選択
+      var zoom_num = map.getZoom(); //ズーム値 int
+      var errorFlg = checkSelectError(layer_kind, layer_data, select_age); //選択エラーチェック 選択ミスがあればTrueを返す
+      if (errorFlg) {
+        var message = "レイヤー作成時に必要な項目が選択されていません。レイヤー作成時の選択ボタンを確認してください。";
+        demo.showNotification('bottom', 'right', message);
+      } else {
+        if (zoom_num < 11 && layer_kind == '2') { //もしメッシュレイヤーを選択していて、その時のズーム値が11よりも広範囲だった場合
+          var res = confirm("広範囲のメッシュレイヤー表示には時間がかかります。表示しますか？");
+          if (res == true) {
+            //OKなら実行
+            createLayerCover(layer_kind, layer_data, select_age); //作成レイヤーの読込ファイル振り分け
+          } else {
+            //キャンセルならそのまま
+            console.log("メッシュ広範囲表示キャンセル");
+          }
+        } else { //メッシュレイヤー以外、もしくはメッシュのズーム値が11以上の場合
+          if (layer_kind == 3 && currentLayer.length != 0) { //交通状況レイヤーが選ばれていて、かつ何かのレイヤーが表示されている状態からの切替
+            removeUnitLegend([]); //DATA枠をリセット
+          }
+          createLayerCover(layer_kind, layer_data, select_age);
+        }
+      }
+    });
+
+    //レイヤーの削除ボタンを押したとき
+    document.getElementById('layerDeleteBtn').addEventListener('click', function () {
+      for (var key in features_dict) {
+        removeLayer(features_dict[key]);
+      }
+      if (trafficLayer !== undefined) { //交通レイヤーが定義されているときのみ通過
+        trafficLayer.setMap(null); //交通レイヤーの削除
+      }
+      if (isEmpty(c_markers)) { // マーカーがなければリストを空にリセットする
+        // console.log("1111111");
+        current_icon = deleteLegend(current_icon, true); //凡例のリセット　リストを空にする
+      } else {
+        // console.log("333333");
+        current_icon = deleteLegend(current_icon, false); //凡例のリセット　リストは空にしない
+        current_icon = removeFlgIcon(current_icon, 1); //flgがレイヤーのものだけ削除してリストを返す
+        createLegend(current_icon, 0); //凡例の作成 マーカーを作成
+      }
+      features_dict = {}; //全て削除したのでリセット
+      currentLayer = []; //全てのレイヤーを削除したので空にする
+      removeUnitLegend(currentLayer); //データ単位凡例を削除リセット
+    });
+
+    // 顧客分布表を地図内に表示する
+    document.getElementById('showCustomerCount').addEventListener('click', function () {
+      removeCustomerDestributionLegend(); // DOMをリセット
+      showCustomerDistributionLegend(); // 商圏内顧客数をカウントし、表示DOMを生成し直す
+    });
+
+    //マーカーの削除ボタンが押されたとき
+    document.getElementById('markerDeleteBtn').addEventListener('click', function () {
+      deleteMarker(c_markers);
+      deleteMarker(circles);
+      deleteMarker(polygon);
+      if (isEmpty(currentLayer) || currentLayer == territoryLayer) { // レイヤーがなければリストを空にリセットする
+        current_icon = deleteLegend(current_icon, true); //凡例のリセット　リストを空にする
+      } else {
+        current_icon = deleteLegend(current_icon, false); //凡例のリセット　リストは空にしない
+        current_icon = removeFlgIcon(current_icon, 0); //flgがマーカーのものだけ削除してリストを返す
+        createLegend(current_icon, 0); //凡例の作成　レイヤーの作成　すでにリストに値が入っているので引数は0を渡す
+      }
+      c_markers = []; //リセット
+      circles = []; //リセット
+      polygon = []; //リセット
+      resetCustomerModalSelect(); //モーダル内の選択肢リセット
+    });
+
+    // google.map.dataのfeatureが追加された時に読み込まれる　https://developers.google.com/maps/documentation/javascript/reference/data#Data.addfeature
+    google.maps.event.addListener(map.data, 'addfeature', function () {
+      // console.log(currentLayer);
+      // console.log("スタイル読込");
+      // console.log(stdNum);
+      if (currentLayer == territoryLayer) {
+        map.data.setStyle(territoryStyleFeature); //layer色変更　テリトリーのみ
+      } else if (currentLayer == perAgeTotalLayer || currentLayer == perAgeRatioLayer || currentLayer == perAgeDeviationLayer) {
+        map.data.setStyle(perAgeTotalLayerFeature); //行政区別レイヤーの色分け
+      } else if (currentLayer == ageLayer || currentLayer == setaiLayer) {
+        map.data.setStyle(perAgeTotalLayerFeature); //市区町村町丁字別　色分け
+      } else {
+        map.data.setStyle(styleFeature); //メッシュ色分け
+      }
+      // console.log("アイコン3");
+      // console.log(current_icon);
+    });
+
+    //顧客作成ボタンを押したとき
+    document.getElementById('customerBtn').addEventListener('click', function () {
+      var searchCondition = getSearchCondition();
+      var selectShops = $('#selectShops').val(); //店舗の選択
+      var selectStaff = $('#selectStaff').val(); //営業マン選択
+      var showShops = $('input[name="shopRadioz"]:checked').val(); //店舗の表示
+      var sale_kind = $('input[name="buyRadioz"]:checked').val(); //販売区分別
+      var showCircle = []; //商圏の表示
+      var showDriveArea = []; //到達圏エリアの表示で選択された商圏範囲
+      var default_marker = false; //初期表示かどうか
+      if (selectShops.length == 0) { //もし店舗選択がされていなかった場合
+        //STT KINTO CAHANGE
+        //var res = confirm("全店舗分の顧客を表示するには処理に時間がかかります。継続しますか？");
+        var res = true;
+        default_marker = true;//これにより店舗選択されてない場合は、顧客全表示ではなく商圏のみ表示にする
+        //END KINTO CHANGE
+        if (res == true) {
+          //OKなら実行
+          createAllMarker(searchCondition, selectShops, selectStaff, showShops, sale_kind, showCircle, showDriveArea, default_marker);
+        } else {
+          //キャンセルならそのまま
+          console.log("顧客マーカーの全表示キャンセル");
+        }
+      } else { //メッシュレイヤー以外、もしくはメッシュのズーム値が11以上の場合
+        createAllMarker(searchCondition, selectShops, selectStaff, showShops, sale_kind, showCircle, showDriveArea, default_marker);
+      }
+    });
+
+    //STT KINTO 20190619 ADD
+    //商圏別顧客数モーダルにてダウンロードボタンを押したとき
+    document.getElementById('customerCountDlBtn').addEventListener('click', function () {
+      var stat = countCustNumOnArea(2);
+    });
+    //END KINTO 20190619
+
+    //マーカー色分別選択が変更されたとき
+    document.getElementById('markerColor').addEventListener('change', function () {
+      var searchCondition = getSearchCondition();
+      var selectShops = $('#selectShops').val(); //店舗の選択
+      var selectStaff = $('#selectStaff').val(); //営業マン選択
+      var showShops = $('input[name="shopRadioz"]:checked').val(); //店舗の表示
+      var sale_kind = $('input[name="buyRadioz"]:checked').val(); //販売区分別
+      var showCircle = []; //商圏の表示
+      var showDriveArea = []; //到達圏エリアの表示で選択された商圏範囲
+      var default_marker = false; //初期表示かどうか
+      if (selectShops.length == 0) { //もし店舗選択がされていなかった場合
+        var res = confirm("顧客表示ボタンで絞込をせずに、全店舗分の顧客を表示するには処理に時間がかかります。継続しますか？");
+        if (res == true) {
+          //OKなら実行
+          createAllMarker(searchCondition, selectShops, selectStaff, showShops, sale_kind, showCircle, showDriveArea, default_marker);
+        } else {
+          //キャンセルならそのまま
+          console.log("顧客マーカーの全表示キャンセル、顧客モーダル表示");
+          $('#customerModal').modal(); //モーダル表示
+        }
+      } else { //店舗の選択が1つ以上されていた場合
+        createAllMarker(searchCondition, selectShops, selectStaff, showShops, sale_kind, showCircle, showDriveArea, default_marker);
+      }
+    });
+
+    //ズーム値が変わった時に発動、マーカーが表示されている場合、サイズを調整する
+    map.addListener("zoom_changed", function () {
+      if (c_markers.length > 0) {
+        var zoom_num = map.getZoom();
+        // console.log(zoom_num);
+        var currentMarkerSizeDict = getMarkerSize(c_markers);
+        var newCMarker; //顧客マーカーサイズ
+        var newSMarker; //店舗マーカーサイズ
+        var newLabel; //店舗ラベルテキストサイズ
+        var labelX; //店舗ラベルX
+        var labelY; //店舗ラベルy
+        var anchorX; // 店舗マーカー位置X
+        var anchorY; // 店舗マーカー位置y
+        var changeFlg = false;
+        if (zoom_num <= 10) {
+          if (currentMarkerSizeDict.customerMarkerSize != 3) {
+            // console.log("customer marker size change 3");
+            // console.log(currentMarkerSizeDict.customerMarkerSize);
+            // console.log("shop marker size change 20");
+            // console.log(currentMarkerSizeDict.shopMarkerSize);
+            newCMarker = 3;
+            newSMarker = 15;
+            newLabel = '6px';
+            labelX = 5;
+            labelY = 0;
+            anchorX = 5;
+            anchorY = 0;
+            changeFlg = true;
+          } else {
+            // console.log("marker size stay");
+          }
+        } else if (10 < zoom_num && zoom_num <= 12) { //ズームアウト　広域
+          if (currentMarkerSizeDict.customerMarkerSize != 5) {
+            // console.log("customer marker size change 5");
+            // console.log(currentMarkerSizeDict.customerMarkerSize);
+            // console.log("shop marker size change 25");
+            // console.log(currentMarkerSizeDict.shopMarkerSize);
+            newCMarker = 5;
+            newSMarker = 25;
+            newLabel = '12px';
+            labelX = 10;
+            labelY = -5;
+            anchorX = 10;
+            anchorY = 10;
+            changeFlg = true;
+          } else {
+            // console.log("marker size stay");
+          }
+        } else if (12 < zoom_num && zoom_num <= 15) { //デフォルトズーム値周辺
+          if (currentMarkerSizeDict.customerMarkerSize != 7) {
+            // console.log("marker size change 7");
+            // console.log(currentMarkerSizeDict.customerMarkerSize);
+            // console.log("shop marker size change 27");
+            // console.log(currentMarkerSizeDict.shopMarkerSize);
+            newCMarker = 7;
+            newSMarker = 27;
+            newLabel = '16px';
+            labelX = 10;
+            labelY = -10;
+            anchorX = 15;
+            anchorY = 20;
+            changeFlg = true;
+          } else {
+            // console.log("marker size stay");
+          }
+        } else if (15 < zoom_num) { //ズームイン　狭域
+          if (currentMarkerSizeDict.customerMarkerSize != 10) {
+            // console.log("marker size change 10");
+            // console.log(currentMarkerSizeDict.customerMarkerSize);
+            // console.log("shop marker size change 35");
+            // console.log(currentMarkerSizeDict.shopMarkerSize);
+            newCMarker = 10;
+            newSMarker = 35;
+            newLabel = '20px';
+            labelX = 10;
+            labelY = -20;
+            anchorX = 15;
+            anchorY = 30;
+            changeFlg = true;
+          } else {
+            // console.log("marker size stay");
+          }
+        }
+        if (changeFlg) {
+          c_markers = changeMarkerSize(c_markers, newCMarker, newSMarker, newLabel, labelX, labelY, anchorX, anchorY); //ズーム値によりマーカーサイズ変更
+          setMapOnAll(map, c_markers);
+        }
+      }
+    });
+
+    //初期表示で店舗マーカーを表示させるための変数取得
+    var searchCondition = getSearchCondition();
+    var selectShops = $('#selectShops').val(); //店舗の選択
+    var selectStaff = $('#selectStaff').val(); //営業マン選択
+    var showShops = $('input[name="shopRadioz"]:checked').val(); //店舗の表示
+    var sale_kind = $('input[name="buyRadioz"]:checked').val(); //販売区分別
+    var showCircle = []; //商圏の表示
+    var showDriveArea = []; //到達圏エリアの表示で選択された商圏範囲
+    var default_marker = true; //初期表示かどうか
+    //デフォルトで店舗マーカーを表示する
+    createAllMarker(searchCondition, selectShops, selectStaff, showShops, sale_kind, showCircle, showDriveArea, default_marker);
+
+    //ポリゴンをマウスオーバーしたとき
+    map.data.addListener('mouseover', mouseInToRegion);
+
+    //店舗検索がされたとき
+    $('input[name="search_shop"]').change(function () {
+      var shopName = $(this).val();
+      // console.log(shopName);
+      if (shopName != "") {
+        dispLoading("データ読込中...");
+        $.when(
+          $.ajax({
+            type: "POST",
+            url: "{% url 'gis:get_shop_latlng' %}",
+            data: { shop_name: shopName },
+            dataType: "json",
+          }).done(function (data) {
+            // console.log(data);
+            if (data.flg) {
+              map.setCenter({ lat: data.lat, lng: data.lng });
+            } else {
+              if (data.many) {
+                // console.log('複数一致');
+                var message = "検索ワードに複数店一致しました。" + data.name + "、 検索しなおしてください。";
+                demo.showNotification('bottom', 'right', message);
+              } else {
+                // console.log('一致なし');
+                var message = "検索ワードに部分一致する店舗がありませんでした。検索しなおしてください。";
+                demo.showNotification('bottom', 'right', message);
+              }
+            }
+          })
+        )
+          .done(function () {
+            removeLoading(); //処理が終了したらローディング画像を取り除く
+          });
+      }
+    });
+
+    //デバッグ時に、テリトリーレイヤーの色崩れを手動修正するために、レイヤーを押したときにコンソールにgeojsonファイルのKEYCODE、テリトリーコード、店舗コード、店舗名を表示する
+    // map.data.addListener('click', function (e) {
+    //   console.log('KEY_CODE');
+    //   console.log(e.feature.getProperty('KEY_CODE'));
+    //   console.log('テリトリーコード');
+    //   console.log(e.feature.getProperty('テリトリーコード'));
+    //   console.log('店舗コード');
+    //   console.log(e.feature.getProperty('店舗コード'));
+    //   console.log('店舗名');
+    //   console.log(e.feature.getProperty('店舗名'));
+    // });
+
+  } // --------------------- initMapここまで---------------------------
+
+  // 標準偏差計算時に使用
+  // function readLayer(layer, features_dict, select_age) {
+  //   console.log(select_age);
+  //   $.getJSON(
+  //     "{% url 'gis:read_layer' %}",
+  //     {
+  //       layer: layer,
+  //       age_num: select_age,
+  //     },
+  //     function (data) {
+  //       console.log(data);
+  //       currentLayer.push(layer);　//現在のレイヤーを入れる箱
+  //       var features = map.data.addGeoJson(data["layer"]); //配列を連結する、レイヤーが2つ読み込まれる時の対処
+  //       features_dict[layer] = features; //layerPathをキーにした辞書を作成
+  //       stdNum = data['std_num'];
+  //       meanNum = data['mean_num'];
+  //       data = [features_dict, stdNum];
+  //       console.log(Math.round(meanNum));
+  //       console.log(Math.round(stdNum));
+  //       return data;
+  //     }
+  //   );
+  // }
+
+  //マーカーの作成前処理
+  function createAllMarker(searchCondition, selectShops, selectStaff, showShops, sale_kind, showCircle, showDriveArea, default_marker) {
+    if ($('input[name="areaBox"]').length != 0) { //同心円の表示選択されたもの、3k、6kなど
+      $('input[name="areaBox"]:checked').each(function () {
+        showCircle.push($(this).val());
+      });
+    } else if ($('input[name="driveTimeArea"]').length != 0) { //到達圏の表示範囲選択されたもの、15分、30分など
+      $('input[name="driveTimeArea"]:checked').each(function () {
+        showDriveArea.push($(this).val());
+      });
+    }
+    if (isEmpty(c_markers)) { //マーカーが表示されていない場合
+      if (isEmpty(currentLayer)) { // レイヤーがなければリストを空にリセットする
+        current_icon = deleteLegend(current_icon, true); //凡例のリセット　リストを空にする
+      } else {
+        current_icon = deleteLegend(current_icon, false); //凡例のリセット　リストは空にしない
+      }
+      getCustomersMarker(c_markers, selectShops, selectStaff, showShops, sale_kind, circles, showCircle, current_icon, default_marker);
+      createDriveTimeArea(polygon, showDriveArea, selectShops);
+      // setMapOnAll(map, c_markers);
+      // setMapOnAll(map, circles);
+      // console.log('2回');
+      // console.log(polygon);
+      // console.log("アイコン2");
+      // console.log(current_icon);
+    } else { //マーカーが表示されている場合
+      if (isEmpty(currentLayer)) { // リストにレイヤーが入っているかどうか
+        current_icon = deleteLegend(current_icon, true); //凡例のリセット　リストを空にする
+      } else {
+        current_icon = deleteLegend(current_icon, false); //凡例のリセット　リストは空にしない
+        // console.log(current_icon); //ここで古いマーカーだけ削除させる処理を入れる必要あり
+        current_icon = removeFlgIcon(current_icon, 0); //flgがマーカのものだけ削除してリストを返す
+      }
+      deleteMarker(c_markers);
+      deleteMarker(circles);
+      deleteMarker(polygon);
+      c_markers = []; //リセット
+      circles = []; //リセット
+      polygon = []; //リセット
+      getCustomersMarker(c_markers, selectShops, selectStaff, showShops, sale_kind, circles, showCircle, current_icon, default_marker);
+      createDriveTimeArea(polygon, showDriveArea, selectShops);
+      // setMapOnAll(map, c_markers);
+      // setMapOnAll(map, circles);
+      // setMapOnAll(map, polygon); //地図への描写
+    }
+  }
+
+  //レイヤー作成、読込ファイルの振り分け
+  function createLayerCover(layer_kind, layer_data, select_age) {
+    for (var key in features_dict) {
+      removeLayer(features_dict[key]); //表示中のレイヤーリセット
+    }
+    if (isEmpty(c_markers)) { // マーカーがリストに入っているかどうか
+      current_icon = deleteLegend(current_icon, true); //凡例のリセット　リストを空にする
+    } else {
+      current_icon = deleteLegend(current_icon, false); //凡例のリセット　リストは空にしない
+      current_icon = removeFlgIcon(current_icon, 1); //flgがレイヤーのものだけ削除してリストを返す
+    }
+    features_dict = {}; //全て削除したのでリセット
+    currentLayer = []; //全てのレイヤーを削除したので空にする
+    if (layer_kind == 1 && layer_data == 1) {
+      features_dict = readLayer(ageLayer, features_dict); //市区町村年齢別レイヤーの読込、セレクトオプションの作成、レイヤーのスタイルを追加
+      currentLayer.push(ageLayer); //現在のレイヤーを入れる箱
+    } else if (layer_kind == 1 && layer_data == 2) {
+      features_dict = readLayer(setaiLayer, features_dict); //市区町村世帯別
+      currentLayer.push(setaiLayer); //現在のレイヤーを入れる箱
+    } else if (layer_kind == 1 && layer_data == 3) {
+      features_dict = readLayer(carLayer, features_dict); //市区町村車種別
+      currentLayer.push(carLayer); //現在のレイヤーを入れる箱
+    } else if (layer_kind == 2 && layer_data == 1) {
+      // var data = readLayer(meshAgeLayer, features_dict, select_age); // 標準偏差計算時に使用 (メッシュ統計データ変更時などで利用)
+      features_dict = readLayer(meshAgeLayer, features_dict); //メッシュ年齢別
+      currentLayer.push(meshAgeLayer); //現在のレイヤーを入れる箱
+    } else if (layer_kind == 2 && layer_data == 2) {
+      // var data = readLayer(meshSetaiLayer, features_dict, select_age); // 標準偏差計算時に使用 (メッシュ統計データ変更時などで利用)
+      features_dict = readLayer(meshSetaiLayer, features_dict); //メッシュ世帯別
+      currentLayer.push(meshSetaiLayer); //現在のレイヤーを入れる箱
+    } else if (layer_kind == 4 && layer_data == 1) {
+      features_dict = readLayer(territoryLayer, features_dict); //テリトリーレイヤー
+      currentLayer.push(territoryLayer); //現在のレイヤーを入れる箱
+    } else if (layer_kind == 3 && layer_data == 1) {
+      trafficLayer = new google.maps.TrafficLayer(); //交通状況
+      trafficLayer.setMap(map);
+    } else if (layer_kind == 5 && layer_data == 1) {
+      features_dict = readLayer(perAgeTotalLayer, features_dict); //行政区域別子供年齢
+      currentLayer.push(perAgeTotalLayer); //現在のレイヤーを入れる箱
+    } else {
+      console.log("error in select layer readLayer");
+    }
+    if (layer_kind == 1) { //レイヤーが市区町村別の場合
+      createLegend(current_icon, 2); //凡例の作成
+    } else if (layer_kind == 2) { //レイヤーがメッシュの場合
+      createLegend(current_icon, 1); //凡例の作成
+    } else if (layer_kind == 5) { //レイヤーが行政区別の場合
+      createLegend(current_icon, 2); //凡例の作成
+    } else if (current_icon.length > 0 && currentLayer == territoryLayer) {
+      createLegend(current_icon, 0); //凡例の作成
+    } else {
+      console.log("凡例作成エラー、もしくはテリトリーレイヤーのみ表示中");
+    }
+  }
+
+  //顧客絞込のチェックの入った検索項目
+  function getSearchCondition() {
+    var shops = $('#selectShops').val(); //選択店舗
+    var users = $('#selectStaff').val(); //選択スタッフ
+    var serviceShops = $('#serviceShops').val(); //選択サービスショップ
+    // var showShop = [];
+    // $('input[name="show_shop"]:checked').each(function () { showShop.push(this.value); }); //店舗位置表示店舗
+    var showShop = $('#showShops').val(); //店舗位置表示店舗
+    var showOtherShop = $('#showOtherShops').val(); //候補地位置表示店舗
+    //商圏範囲
+    //距離範囲
+    var giscustomerCustomerRank = [];
+    $('input[name="giscustomer_customer_rank"]:checked').each(function () { giscustomerCustomerRank.push(this.value); }); //顧客層別
+    var sex = [];
+    $('input[name="sex"]:checked').each(function () { sex.push(this.value); }); //性別
+    var customerFixedKind = [];
+    $('input[name="customer_fixed_kind"]:checked').each(function () { customerFixedKind.push(this.value); }); //顧客固定客
+    var saleFlg = [];
+    $('input[name="sale_flg"]:checked').each(function () { saleFlg.push(this.value); }); //新中
+    var giscustomerCarsRank = [];
+    $('input[name="giscustomer_cars_rank"]:checked').each(function () { giscustomerCarsRank.push(this.value); }); //車両層別
+    var carFixedKind = [];
+    $('input[name="car_fixed_kind"]:checked').each(function () { carFixedKind.push(this.value); }); //車両固定客
+    var markerColor = $('select[name="marker_color"]').val(); //表示マーカーの色分け基準
+    var carModel = $('input[name="car_model"]').val(); //型式
+
+    data = {
+      shops: shops,
+      users: users,
+      show_shop: showShop.concat(showOtherShop),
+      giscustomer_customer_rank: giscustomerCustomerRank,
+      sex: sex,
+      customer_fixed_kind: customerFixedKind,
+      sale_flg: saleFlg,
+      giscustomer_cars_rank: giscustomerCarsRank,
+      car_fixed_kind: carFixedKind,
+      marker_color: markerColor,
+      car_model: carModel,
+      service_shops: serviceShops,
+    };
+
+    return data;
+  }
+
+  // 指定のレイヤーを読み込み、表示、読込データに国勢調査データしかないのでGET処理で実装
+  function readLayer(layer, features_dict) {
+    // console.log("レイヤー読込");
+    dispLoading("データ読込中...");
+    // console.log(features_dict);
+    $.getJSON(layer, function (data) {
+      if (layer == meshAgeLayer || layer == meshSetaiLayer) {
+        data = withoutMeshLayer(data);
+      }
+      var features = map.data.addGeoJson(data); //配列を連結する、レイヤーが2つ読み込まれる時の対処
+      features_dict[layer] = features; //layerPathをキーにした辞書を作成
+      // console.log("ファイル取込み完了");
+      // console.log(data);
+      // console.log(currentLayer);
+      // console.log(features_dict);
+    })
+      .always(function () {
+        removeLoading();
+      });
+    return features_dict;
+  }
+
+  //見ている範囲にあるメッシュ番号以外は除く, 縦で仕切れたらうまくいく
+  function withoutMeshLayer(data) {
+    // var center = map.getCenter();
+    var ne = map.getBounds().getNorthEast();
+    var sw = map.getBounds().getSouthWest();
+    var ne_mesh = calcMeshCode(ne.lng(), ne.lat(), 4); //北東
+    var nw_mesh = calcMeshCode(sw.lng(), ne.lat(), 4); //北西
+    var se_mesh = calcMeshCode(ne.lng(), sw.lat(), 4); //南東
+    var sw_mesh = calcMeshCode(sw.lng(), sw.lat(), 4); //南西
+    // var mesh = calcMeshCode(center.lng(), center.lat(), 2);
+    // var mesh = calcMeshCode(center.lng(), center.lat(), 1);
+    // console.log(mesh);
+    // var features = data.features.filter(feature => ne_mesh > feature.properties.KEY_CODE && sw_mesh < feature.properties.KEY_CODE) //IEで矢印機能がサポートしてない
+    // featuers = features.filter(feature => ne_mesh.slice(5,8) > feature.properties.KEY_CODE.slice(5,8) || feature.properties.KEY_CODE.slice(5,8) > sw_mesh.slice(5,8))
+    // var features = data.features.filter(feature => feature.properties.MESH1_ID + feature.properties.MESH2_ID == mesh);
+    // var features = data.features.filter(feature => feature.properties.MESH1_ID == mesh);
+    var features = data.features.filter(function (feature) {
+      return ne_mesh > feature.properties.KEY_CODE && sw_mesh < feature.properties.KEY_CODE
+    });
+    // console.log(data.features.length);
+    // console.log(features.length);
+    data.features = features;
+    return data;
+  }
+
+  //Ajaxを使って顧客を返してもらって表示
+  // 引数が多く存在するが、改修により、getSearchCondition を作成したことで、その中で必要な選択条件を取得しているので、現在は引数不要になっている。引数削除などによる問題が発生した場合に困るので現在そのまま。
+  function getCustomersMarker(c_markers, selectShops, selectStaff, showShops, saleKind, circles, showCircle, current_icon, default_marker) {
+    dispLoading("データ読込中...");
+    var searchCondition = getSearchCondition();
+    searchCondition.default_marker = default_marker; //初期表示かどうか判別するフラグを追加
+    var zoom_num = map.getZoom();
+    // console.log(selectShops);
+    // console.log(selectStaff);
+    // console.log(showShops);
+    // console.log(saleKind);
+    // console.log(showCircle);
+    var baseUrl = "/static/images/marker/";
+    $.when(
+      $.ajax({
+        type: "POST",
+        url: "{% url 'gis:create_customer_marker' %}",
+        data: searchCondition,
+        dataType: "json",
+      }).done(function (data) {
+        // console.log(data);
+        var features = data.features;
+        for (var i = 0; i < features.length; i++) {
+          if (features[i] != null) {
+            var location = features[i].geometry.coordinates;
+            var url = baseUrl + features[i].properties.marker;
+            if (features[i].properties.kind == "shop") {
+              //店舗markerオブジェクト作成
+              c_markers[i] = new google.maps.Marker({
+                map: map,
+                position: { lat: location[0], lng: location[1] },
+                zIndex: 4, //一番手前
+                //STT TEST_KINTO 店舗:0　顧客:1
+                kind: 0,
+                //keiretsu: features[i].properties.keiretsu, 店舗マーカーにはとりあえず不要
+                //END TEST_KINTO
+                label: {
+                  color: 'black',
+                  fontWeight: 'bold',
+                  text: features[i].properties.name,
+                  fontSize: '20px',
+                },
+                icon: {
+                  labelOrigin: new google.maps.Point(10, -10),
+                  url: url,
+                  scaledSize: new google.maps.Size(Number(features[i].properties.size), Number(features[i].properties.size)),
+                  origin: new google.maps.Point(0, 0),
+                  anchor: new google.maps.Point(15, 20),
+                },
+                shopId: features[i].properties.shop_id,
+                // animation: google.maps.Animation.DROP
+              });
+              // 店舗マーカークリックイベント
+              c_markers[i].addListener('click', function () {
+                //クリックされた店舗マーカーのIdを取得し、Ajaxで店舗の詳細データを取得し、画面に表示
+                showShopDetailData(this.shopId);
+              });
+              //STT TEST_KINTO 店舗名パラメータ追加
+              createCircle(showCircle, circles, location, features[i].properties.name, features[i].properties.keiretsu); //同心円作成
+              //END TEST_KINTO
+            } else {
+              //顧客markerオブジェクト作成
+              c_markers[i] = new google.maps.Marker({
+                map: map,
+                position: { lat: location[0], lng: location[1] },
+                title: features[i].properties.name,
+                zIndex: 3, //店舗マーカーの次に手前
+                //STT TEST_KINTO 店舗:0　顧客:1
+                kind: 1,
+                //END TEST_KINTO
+                icon: {
+                  //以下css Spriteイメージを利用時使用
+                  // url: "{% static 'images/marker/icon3.png' %}",
+                  // origin: new google.maps.Point(10, 25),
+                  // origin: new google.maps.Point(Number(features[i].properties.x), Number(features[i].properties.y)), //画像のどの部分から使用するか、起点
+                  // size: new google.maps.Size(10, 10), //画像の使用する範囲
+                  // scaledSize: new google.maps.Size(120, 120),
+                  // scaledSize: new google.maps.Size(Number(features[i].properties.size), Number(features[i].properties.size)), //拡大・縮小後の全体のサイズ
+                  //以下個別マーカーイメージ使用
+                  url: url,
+                  scaledSize: new google.maps.Size(Number(features[i].properties.size), Number(features[i].properties.size)),
+                  // origin: new google.maps.Point(0, 0),
+                },
+              });
+            }
+            var legendName = features[i].properties.legend_name.replace(/\s+/, ""); //文字列から空白を削除
+            var flg = true;
+            for (var n = 0; n < current_icon.length; n++) {
+              // console.log(current_icon[n].name);
+              if (current_icon[n].name === legendName) {
+                flg = false;
+              } else {
+                continue;
+              }
+            }
+            if (flg) {
+              current_icon.push({ name: legendName, icon: url, flg: 0 }); //current_iconリストの中に同一要素がなかった場合に入れる。 flg:0 = マーカー, 1 = ポリゴン
+            }
+          }
+        }
+        // console.log("アイコン");
+        // console.log(current_icon);
+        createLegend(current_icon, 0); //マーカー凡例の作成
+      })
+    )
+      .done(function () {
+        $.when(
+          wait(1) //1秒間待つ　マーカーの描画時間待ち
+        )
+          .done(function () {
+            map.setZoom(zoom_num + 1), //マーカーサイズを変更するため無理やりズーム変更してイベント発火
+              map.setZoom(zoom_num); //マーカーを作成したときのズーム値に戻す
+            removeLoading(); //処理が終了したらローディング画像を取り除く
+          });
+      });
+  }
+
+  //車両到達圏範囲の表示処理
+  function createDriveTimeArea(polygon, showDriveArea, selectShops) {
+    if (0 < showDriveArea.length) { //15分か30分が選択されている場合
+      $.each(selectShops, function () {
+        var layer = getDriveTimeAreaPath(Number(this)); //対象到達圏レイヤーのgeofileのパス
+        $.each(showDriveArea, function () {
+          var polygonCode = []; //ポリゴンを描く線の緯度経度地点
+          var showTimeArea = this; //15分 or 30分
+          if (layer == null) {
+            return true;
+          } else {
+            $.getJSON(layer, function (data) {
+              // console.log(data);
+              var features = data.features;
+              $.each(features, function () {
+                if (this.properties.Name == showTimeArea) {
+                  var geocode = this.geometry.coordinates[0][0];
+                  $.each(geocode, function () {
+                    polygonCode.push({ lat: this[1], lng: this[0] });
+                  });
+                  var driveTimePolygon = new google.maps.Polygon({
+                    map: map,
+                    paths: polygonCode,
+                    strokeColor: 'blue',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 1,
+                    fillColor: 'blue',
+                    fillOpacity: 0.1,
+                    zIndex: 1, //マーカーの後ろ
+                    visible: true,
+                  });
+                  polygon.push(driveTimePolygon); //作成されたポリゴンをリストに格納しておく
+                }
+              });
+            });
+          }
+        });
+      });
+    }
+  }
+
+  //同心円商圏範囲の表示
+  function createCircle(showCircle, circles, location, tenmpoName, keiretsu) {
+    var lineColor;
+    var areaColor;
+    if (0 < showCircle.length) {
+      for (var m = 0; m < showCircle.length; m++) {
+        //STT KINTO 商圏の色分け
+        switch (keiretsu) {
+          case 1: //トヨペット
+            lineColor = 'green';
+            areaColor = 'blue';
+            break;
+          case 2: //カローラ
+            lineColor = 'orange';
+            areaColor = 'blue';
+            break;
+          case 3:  //ネッツ
+            lineColor = 'blue';
+            areaColor = 'blue';
+            break;
+          case 4: //新規
+            lineColor = 'red';
+            areaColor = 'blue';
+            break;
+          default:
+            lineColor = 'gray';
+            areaColor = 'blue';
+        }
+        //EBD KINTO
+        var circle = new google.maps.Circle({
+          map: map,
+          center: new google.maps.LatLng(location[0], location[1]),
+          fillColor: areaColor,
+          fillOpacity: 0.1, //透明度
+          radius: Number(showCircle[m]), //半径　メートル
+          strokeColor: lineColor, //外周色
+          strokeOpacity: 1, //不透明
+          strokeWeight: 2, //外周線太さ
+          zIndex: 1, //マーカーの後ろ
+          //STT TEST_KINTO 店舗名パラメータ追加
+          tempo_name: tenmpoName,
+          keiretsu: keiretsu,
+          //END TEST_KINTO 店舗名パラメータ追加
+          visible: true, //表示状態
+          clickable: true // click可能
+        });
+        circle.addListener('click', function () {
+          this.setMap(null);
+          var index = circles.indexOf(this);
+          circles.splice(index, 1);
+        });
+        circles.push(circle);
+        // console.log(circles);
+      }
+    }
+  }
+
+  // マップにマーカー情報をセットする、初期表示状態は必要ないが、一度マーカーを削除した後の出現の際に必要
+  function setMapOnAll(map, markers) {
+    for (var i = 0; i < markers.length; i++) {
+      // showInfoWindow(markers, i);
+      markers[i].setMap(map);
+    }
+    //     var options = { imagePath: "{% static 'images/mapicons/person' %}"};
+    //     var markerClusterer = new markerClusterer(map, markers, options);
+  };
+
+  // マーカーなどのオブジェクトの入ったリストを回して削除する
+  function deleteMarker(objList) {
+    $.each(objList, function () {
+      if (this.setMap == undefined) {
+        return true
+      } else {
+        this.setMap(null);
+      }
+    });
+  }
+
+  // 凡例の作成 current_icon[{},{}], kindNum 1: メッシュレイヤーの場合, kindNum 0: マーカー凡例, KindNum 2: 市区町村町丁字別、行政区統計凡例, KindNum 3: テリトリー凡例
+  function createLegend(current_icon, kindNum) {
+    var attr_num = $('input[name="attrRadioz"]:checked').val(); //属性選択
+    if (kindNum == 1) { //メッシュレイヤーの場合
+      var data = checkStdMeanNum(attr_num); //標準偏差と平均を取得
+      var std_num = data.std_num;
+      var mean_num = data.mean_num;
+      // console.log("レイヤー凡例");
+      // console.log(current_icon);
+      current_icon.push({ name: ' <= ' + mean_num, icon: 'rgba(255,255,255,0.3)', flg: 1 }); //RGBA表記でないと背景と文字の透明度が一緒になってしまう
+      current_icon.push({ name: mean_num + ' < >= ' + (Number(mean_num) + Number(std_num)), icon: 'rgba(255,153,153,0.3)', flg: 1 });
+      current_icon.push({ name: (Number(mean_num) + Number(std_num)) + ' < >= ' + (Number(mean_num) + Number(std_num) * 2), icon: 'rgba(255,50,50,0.3)', flg: 1 });
+      current_icon.push({ name: (Number(mean_num) + Number(std_num) * 2) + ' < >= ' + (Number(mean_num) + Number(std_num) * 3), icon: 'rgba(204,0,0,0.3)', flg: 1 });
+      current_icon.push({ name: (Number(mean_num) + Number(std_num) * 3) + ' <=', icon: 'rgba(153,0,0,0.3)', flg: 1 });
+    } else if (kindNum == 2) { //市区町村町丁字別、行政区統計凡例の場合
+      var colorRange = getFeatureColorRange(attr_num); //カラー仕分け基準値をとってくる
+      current_icon.push({ name: ' <= ' + colorRange.first, icon: 'rgba(255,255,255,0.3)', flg: 1 }); //RGBA表記でないと背景と文字の透明度が一緒になってしまう
+      current_icon.push({ name: colorRange.first + ' < >= ' + colorRange.second, icon: 'rgba(255,153,153,0.3)', flg: 1 });
+      current_icon.push({ name: colorRange.second + ' < >= ' + colorRange.third, icon: 'rgba(255,50,50,0.3)', flg: 1 });
+      current_icon.push({ name: colorRange.third + ' < >= ' + colorRange.fourth, icon: 'rgba(204,0,0,0.3)', flg: 1 });
+      current_icon.push({ name: colorRange.fourth + ' <=', icon: 'rgba(153,0,0,0.3)', flg: 1 });
+    } else if (kindNum == 3) { //テリトリー凡例の場合のみ
+      var color_dict = shopCodeList();
+      var id_list = Object.keys(color_dict);
+      for (i = 0; i < id_list.length; i++) {
+        current_icon.push({ name: color_dict[Number(id_list[i])].name, icon: color_dict[Number(id_list[i])].code, flg: 1 });
+      }
+      // console.log(current_icon);
+    }
+    //凡例作成　共通
+    var legend = document.getElementById('legend');
+    for (var i = 0; i < current_icon.length; i++) {
+      var name = current_icon[i].name;
+      var icon = current_icon[i].icon;
+      var div = document.createElement('div');
+      if (current_icon[i].flg == 0) { //markerの場合
+        if (isNaN(Number(name)) == false || name == "None") {
+          var marker_color = $('select[name="marker_color"]').val();
+          // console.log(name);
+          // console.log(marker_color);
+          name = getLegendFromNum(name, marker_color); //数値で管理されているカラムの数値から文字列への変更　例：sale_flg :1 :2　新中
+        }
+        div.innerHTML = '<img src="' + icon + '"> ' + name;
+      } else if (current_icon[i].flg == 1) { // レイヤーの場合
+        div.innerHTML = '<div class="layer_color" style="background-color: ' + icon + ';"> ' + name;
+      }
+      legend.appendChild(div);
+    }
+    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend); //地図上のの右下に作成要素を表示
+    $('#legend').removeAttr('class');
+  }
+
+  // 凡例を削除
+  function deleteLegend(current_icon, flg) {
+    if (flg) {
+      current_icon = []; //リセット
+    }
+    // var legend = document.getElementById('legend');
+    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].clear(); //divから丸ごと削除
+    $('#legend.legend-hide').remove();
+    $('#map').after('<div id="legend" class="legend-hide"><h6>凡例</h6></div>'); //要素のリセット
+    return current_icon;
+  }
+
+  //データ単位凡例の削除
+  function removeUnitLegend(currentLayer) {
+    if (currentLayer.length == 0) {
+      map.controls[google.maps.ControlPosition.LEFT_BOTTOM].clear(); //divから丸ごと削除
+      $('#unit.legend-hide').remove();
+      $('#map').after('<div id="unit" class="legend-hide"><h6>DATA</h6></div>'); //要素のリセット
+    }
+  }
+
+  // 顧客分布表示のDOMリセット
+  function removeCustomerDestributionLegend() {
+    map.controls[google.maps.ControlPosition.LEFT_CENTER].clear(); //divから丸ごと削除
+    $('#customerDistribution.legend-hide').remove();
+    $('#map').after('<div id="customerDistribution" class="legend-hide"><div class="card card-customer-distribution"></div></div>'); //要素のリセット
+    var cusDistri = document.getElementById('customerDistribution');
+    var legendEle = document.getElementsByClassName('card card-customer-distribution');
+    domObject = $(cardOfCustomerDistribution);
+    domObject.appendTo(legendEle);
+  }
+
+  // 顧客分布の計算処理とDOM生成、地図への表示処理
+  function showCustomerDistributionLegend() {
+    dispLoading("処理中...");
+    var stat = countCustNumOnArea(1);
+    var customerDistribution = document.getElementById('customerDistribution');
+    map.controls[google.maps.ControlPosition.LEFT_CENTER].push(customerDistribution); //表示マップの左中央に作成要素を表示
+    $('#customerDistribution').removeAttr('class');
+    removeLoading();
+  }
+
+  //テリトリーのスタイル指定
+  function territoryStyleFeature(feature) {
+    var num = Number(feature.getProperty('店舗コード')); //店舗コード
+    var color_dict = shopCodeList();
+    var color = color_dict[num].code;
+    // console.log(num);
+    // console.log(color);
+    var outlineWeight = 0.5, zIndex = 2;
+
+    // if (feature.getProperty('CHECK') === 'hover') {
+    //   outlineWeight = zIndex = 2;
+    // }
+    return {
+      strokeColor: 'white', //ポリゴン境界線の色指定
+      zIndex: zIndex, //ポリゴンの重複時の順番　cssと一緒
+      fillColor: color, //ポリゴン内の色指定
+      strokeWeight: outlineWeight, //境界線の太さ
+      fillOpacity: 0.3, //ポリゴンの色の透明度
+      visible: true //ポリゴンを表示させるかどうか
+    }
+  }
+
+  // 選択肢のプロパティ数値と対応する判別設定最大値を取得し、ポリゴンのレイアウト設定とアクションの追加に振り分け
+  function styleFeature(feature) {
+    var attr_num = $('input[name="attrRadioz"]:checked').val(); //年齢選択
+
+    var data = checkStdMeanNum(attr_num); //標準偏差と平均を取得
+    var std_num = data.std_num;
+    var mean_num = data.mean_num;
+
+    // console.log("色変更");
+    // console.log(selectOpt);
+    var color;
+    // console.log(stdNum);
+
+    var num = Number(feature.getProperty(attr_num));
+    // console.log(num);
+    // 現在使用されているgeojsonレイヤーの確認
+    if (num === 0) {
+      color = 'hsl(0, 100%, 100%)';
+    } else if (num <= mean_num) {
+      color = 'hsl(0, 100%, 100%)';
+    } else if (num <= mean_num + std_num) {
+      color = 'hsl(0, 100%, 80%)';
+    } else if (num <= mean_num + std_num * 2) {
+      color = 'hsl(0, 100%, 60%)';
+    } else if (num <= mean_num + std_num * 3) {
+      color = 'hsl(0, 100%, 40%)';
+    } else if (mean_num + std_num * 3 <= num) {
+      color = 'hsl(0, 100%, 30%)';
+    } else {
+      color = 'hsl(60, 100%, 60%)';
+      console.log('error get color');
+    }
+    // console.log(color);
+
+    var outlineWeight = 0.5, zIndex = 2;
+
+    // if (feature.getProperty('CHECK') === 'hover') {
+    //   outlineWeight = zIndex = 2;
+    // }
+    return {
+      strokeColor: 'white', //ポリゴン境界線の色指定
+      zIndex: zIndex, //ポリゴンの重複時の順番　cssと一緒
+      fillColor: color, //ポリゴン内の色指定
+      strokeWeight: outlineWeight, //境界線の太さ
+      fillOpacity: 0.3, //ポリゴンの色の透明度
+      visible: true //ポリゴンを表示させるかどうか
+    }
+  }
+
+  //車両到達圏エリアレイヤーを読込、e-Stat情報なのでGET読込、lst：選択された商圏範囲のリスト（15min、30min)、polygon現在表示されている到達圏範囲
+  function showDriveTimeArea(lst, polygon) {
+    if (lst.length != 0) {
+      //最終的にマルチセレクトで選ばれた店舗のgeojsonファイルを読込に行く
+      var selectShops = $('#selectShops').val();
+      $.each(selectShops, function () { //['11', '12']
+        var layer = getDriveTimeAreaPath(Number(this));
+        $.each(lst, function () { //['15min', '30min']
+          var polygonCode = [];
+          if (layer == null) {
+            return true;
+          } else {
+            $.getJSON(layer, function (data) {
+              // console.log(data);
+              var features = data.features;
+              $.each(lst, function (index, driveTime) {
+                // console.log(lst);
+                // console.log(index);
+                // console.log(driveTime);
+                if (features[index].properties.Name == driveTime) {
+                  var geocode = features[index].geometry.coordinates[0][0];
+                  $.each(geocode, function () {
+                    polygonCode.push({ lat: this[1], lng: this[0] });
+                  });
+                  var driveTimePolygon = new google.maps.Polygon({
+                    paths: polygonCode,
+                    strokeColor: 'blue',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 1,
+                    fillColor: 'blue',
+                    fillOpacity: 0.1,
+                    zIndex: 1, //マーカーの後ろ
+                  });
+                  polygon.push(driveTimePolygon);
+                }
+                setMapOnAll(map, polygon); //地図への描写
+              });
+            });
+          }
+        });
+      });
+    }
+  }
+
+
+  // featureからlayerのpoligonをひとつずつ削除
+  function removeLayer(features) {
+    // console.log(features);
+    // console.log("削除func");
+    // console.log(currentLayer);
+    for (var i = 0; i < features.length; i++) {
+      map.data.remove(features[i]);
+    }
+  }
+
+  //リストの中の辞書に特定のフラグがあるものをリストから削除する
+  function removeFlgIcon(list, flg) {
+    for (var i = 0; i < list.length; i++) {
+      if (flg == list[i].flg) {
+        delete list[i];
+      } else {
+        continue;
+      }
+    }
+    new_list = list.filter(function (x) {
+      return x;
+    });
+    // console.log("empty削除");
+    // console.log(list);
+    // console.log(new_list);
+    return new_list;
+  }
+
+  //到達圏エリアパス　別ファイルの管理をしたいが、djangoのテンプレートタグレンダリングが必要なためここに書いている
+  function getDriveTimeAreaPath(num) {
+    var path;
+    if (num == 11) {
+      path = "{% static 'geojson/drive_time/naganuma.geojson' %}"; //静岡長沼店
+    } else if (num == 13) {
+      path = "{% static 'geojson/drive_time/minami.geojson' %}"; //静岡南店
+    } else if (num == 23) {
+      path = "{% static 'geojson/drive_time/iroha.geojson' %}"; //静岡いろは店
+    } else if (num == 14) {
+      path = "{% static 'geojson/drive_time/shimizutoumei.geojson' %}"; //清水東名店
+    } else if (num == 15) {
+      path = "{% static 'geojson/drive_time/fujieda.geojson' %}"; //藤枝店
+    } else if (num == 8) {
+      path = "{% static 'geojson/drive_time/rexusaoi.geojson' %}"; //レクサス葵店
+    } else if (num == 9) {
+      path = "{% static 'geojson/drive_time/rexusfuji.geojson' %}"; //レクサス富士店
+    } else if (num == 16) {
+      path = "{% static 'geojson/drive_time/yaizuotomi.geojson' %}"; //焼津大富店
+    } else if (num == 17) {
+      path = "{% static 'geojson/drive_time/haibarashizunami.geojson' %}"; //榛原静波店
+    } else if (num == 18) {
+      path = "{% static 'geojson/drive_time/shimizusakurabashi.geojson' %}"; //清水桜橋店
+    } else if (num == 20) {
+      path = "{% static 'geojson/drive_time/fujiedatsuiji.geojson' %}"; //藤枝築地店
+    } else if (num == 25) {
+      path = "{% static 'geojson/drive_time/Ushimizu.geojson' %}"; //U清水店
+    } else if (num == 26) {
+      path = "{% static 'geojson/drive_time/Ufujieda.geojson' %}"; //U藤枝店
+    } else if (num == 27) {
+      path = "{% static 'geojson/drive_time/Unakahara.geojson' %}"; //U中原店
+    } else if (num == 31) {
+      path = "{% static 'geojson/drive_time/numazuhiramachi.geojson' %}"; //沼津平町店
+    } else if (num == 32) {
+      path = "{% static 'geojson/drive_time/mishima.geojson' %}"; //三島店
+    } else if (num == 33) {
+      path = "{% static 'geojson/drive_time/fujidembo.geojson' %}"; //富士伝法店
+    } else if (num == 34) {
+      path = "{% static 'geojson/drive_time/fuji.geojson' %}"; //富士店
+    } else if (num == 35) {
+      path = "{% static 'geojson/drive_time/ito.geojson' %}"; //伊東店
+    } else if (num == 36) {
+      path = "{% static 'geojson/drive_time/shimoda.geojson' %}"; //下田店
+    } else if (num == 37) {
+      path = "{% static 'geojson/drive_time/gotenba.geojson' %}"; //御殿場店
+    } else if (num == 38) {
+      path = "{% static 'geojson/drive_time/fujinomiya.geojson' %}"; //富士宮店
+    } else if (num == 39) {
+      path = "{% static 'geojson/drive_time/ohito.geojson' %}"; //大仁店
+    } else if (num == 41) {
+      path = "{% static 'geojson/drive_time/susono.geojson' %}"; //裾野店
+    } else if (num == 42) {
+      path = "{% static 'geojson/drive_time/numazubaipasumidorigaoka.geojson' %}"; //沼津バイパスみどりが丘店
+    } else if (num == 51) {
+      path = "{% static 'geojson/drive_time/Unumazubaipasumidorigaoka.geojson' %}"; //U沼津バイパスみどりが丘店
+    } else if (num == 61) {
+      path = "{% static 'geojson/drive_time/hamamatsumiyatake.geojson' %}"; //浜松宮竹店
+    } else if (num == 62) {
+      path = "{% static 'geojson/drive_time/hamamatsuaritama.geojson' %}"; //浜松有玉店
+    } else if (num == 63) {
+      path = "{% static 'geojson/drive_time/hamamatsuhigashiwakabayashi.geojson' %}"; //浜松東若林店
+    } else if (num == 64) {
+      path = "{% static 'geojson/drive_time/iwata.geojson' %}"; //磐田店
+    } else if (num == 65) {
+      path = "{% static 'geojson/drive_time/kakegawa.geojson' %}"; //掛川店
+    } else if (num == 66) {
+      path = "{% static 'geojson/drive_time/hamakita.geojson' %}"; //浜北店
+    } else if (num == 67) {
+      path = "{% static 'geojson/drive_time/hamamatsushitoro.geojson' %}"; //浜松志都呂店
+    } else if (num == 68) {
+      path = "{% static 'geojson/drive_time/ogasa.geojson' %}"; //小笠店
+    } else if (num == 70) {
+      path = "{% static 'geojson/drive_time/fukuroi.geojson' %}"; //袋井店
+    } else if (num == 72) {
+      path = "{% static 'geojson/drive_time/hamamatsuaritama.geojson' %}"; //U浜松有玉店
+    } else {
+      path = null;
+    }
+    return path;
+  }
+
+  //行政区画別の年齢層
+  function perAgeTotalLayerFeature(feature) {
+    var attr_num = $('input[name="attrRadioz"]:checked').val(); //年齢選択
+    // console.log(attr_num);
+    var num = Number(feature.getProperty(attr_num)); //比較対象数値
+    // console.log(num);
+    var colorRange = getFeatureColorRange(attr_num); //カラー仕分け基準値をとってくる
+
+    if (num < colorRange.first) {
+      color = 'hsl(0, 100%, 100%)';
+    } else if (colorRange.first <= num && num < colorRange.second) {
+      color = 'hsl(0, 100%, 80%)';
+    } else if (colorRange.second <= num && num < colorRange.third) {
+      color = 'hsl(0, 100%, 60%)';
+    } else if (colorRange.third <= num && num < colorRange.fourth) {
+      color = 'hsl(0, 100%, 40%)';
+    } else if (colorRange.fourth <= num) {
+      color = 'hsl(0, 100%, 20%)';
+    } else {
+      color = 'hsl(60, 100%, 60%)';
+      console.log('error get color');
+    }
+
+    var outlineWeight = 0.5, zIndex = 2;
+
+    // if (feature.getProperty('CHECK') === 'hover') {
+    //   outlineWeight = zIndex = 2;
+    // }
+    return {
+      strokeColor: 'white', //ポリゴン境界線の色指定
+      zIndex: zIndex, //ポリゴンの重複時の順番　cssと一緒
+      fillColor: color, //ポリゴン内の色指定
+      strokeWeight: outlineWeight, //境界線の太さ
+      fillOpacity: 0.3, //ポリゴンの色の透明度
+      visible: true //ポリゴンを表示させるかどうか
+    }
+  }
+
+  // 各ポリゴンをマウスオーバーした時のアクション
+  function mouseInToRegion(e) {
+    var attr_num = $('input[name="attrRadioz"]:checked').val(); //属性選択
+    var value = e.feature.getProperty(attr_num); //プロパティから現在マウスの乗っているポリゴンの数値を取得
+    var unit_text = getUnitPropertyNum(currentLayer); //単位
+    var unit = document.getElementById('unit');
+    var layer_text = getSelectLayerText(); //現在表示しているレイヤーの名前
+    var zoom = map.getZoom().toString(); //現在のズーム値
+    var lst = [layer_text, 'ズーム値：' + zoom, '単位：' + unit_text, '数値：' + value]
+    if ($('#unit').hasClass('legend-hide')) {
+      if (currentLayer != territoryLayer) {
+        $.each(lst, function () {
+          var div = createDiv('div', this); //DOM要素の作成機能
+          unit.appendChild(div);
+        });
+        map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(unit); //表示マップの左下に作成要素を表示
+        $('#unit').removeAttr('class');
+      }
+    } else {
+      if (currentLayer == territoryLayer || currentLayer.length == 0) {
+        removeUnitLegend([]); //空配列を渡す 一旦DATA枠削除
+        // console.log('通過');
+      } else {
+        $('#unit').empty(); //子要素リセット
+        var div = createDiv('h6', 'DATA'); //DOM要素の作成機能
+        unit.appendChild(div);
+        $.each(lst, function () {
+          var div = createDiv('div', this); //DOM要素の作成機能
+          unit.appendChild(div);
+        });
+      }
+    }
+  };
+
+  //表示中のレイヤーのテキストを繋げて文字列で返す
+  function getSelectLayerText() {
+    var layerText = $('input[name="layerRadioz"]:checked').parent().text().replace(/\s+/g, "");
+    var dataText = $('input[name="dataRadioz"]:checked').parent().text().replace(/\s+/g, "");
+    var attrText = $('input[name="attrRadioz"]:checked').parent().text().replace(/\s+/g, "");
+    var allText = "表示レイヤー：\n" + layerText + "/ \n" + dataText + "/ \n" + attrText;
+    return allText
+  }
+
+  //レイヤーの選択条件が選択されているかどうか
+  function checkSelectError(layer_kind, layer_data, select_age) {
+    var flg = false;
+    if (layer_kind == undefined) { //レイヤーの種類が選択されていなかった場合
+      flg = true;
+    } else if (layer_kind == 3 || layer_kind == 4) { //レイヤーの種類が交通状況か、テリトリーエリアであった場合
+      if (layer_data == undefined) {
+        flg = true;
+      }
+    } else { //市町村、行政区域、500メッシュが選択された場合
+      if (select_age == undefined) {
+        flg = true;
+      }
+    }
+    return flg;
+  }
+
+  //マーカーのサイズを変更し返す
+  function changeMarkerSize(c_markers, cMarkerSize, sMarkerSize, labelSize, labelX, labelY, anchorX, anchorY) {
+    deleteMarker(c_markers);
+    $.each(c_markers, function () {
+      if (this.icon.url == toyopetMarker || this.icon.url == corollaMarker || this.icon.url == netzMarker || this.icon.url == optionSiteMarker || this.icon.url == othersMarker) {
+        //店舗マーカーサイズ
+        this.icon.scaledSize = new google.maps.Size(sMarkerSize, sMarkerSize);
+        this.icon.labelOrigin = new google.maps.Point(labelX, labelY);
+        this.icon.anchor = new google.maps.Point(anchorX, anchorY),
+          this.label.fontSize = labelSize;
+      } else {
+        //顧客マーカーサイズ
+        this.icon.scaledSize = new google.maps.Size(cMarkerSize, cMarkerSize);
+      }
+    });
+    // console.log('サイズ変更');
+    return c_markers;
+  }
+
+  //マーカーの現在のサイズを取得し、数値を返す
+  function getMarkerSize(c_markers) {
+    var sizeDict = {};
+    var customerMarkerSize = 0;
+    var shopMarkerSize = 0;
+    $.each(c_markers, function () {
+      if (this.icon.url != toyopetMarker && this.icon.url != corollaMarker && this.icon.url != netzMarker && this.icon.url != optionSiteMarker && this.icon.url != othersMarker) {
+        // 顧客マーカーが取得された場合
+        customerMarkerSize = this.icon.scaledSize.height;
+        return false;
+      } else if (this.icon.url == toyopetMarker && this.icon.url == corollaMarker && this.icon.url == netzMarker && this.icon.url == optionSiteMarker && this.icon.url == othersMarker) {
+        // 店舗マーカーが取得された場合
+        shopMarkerSize = this.icon.scaledSize.height;
+        return false;
+      } else {
+        return true;
+      }
+    });
+    sizeDict['customerMarkerSize'] = customerMarkerSize;
+    sizeDict['shopMarkerSize'] = shopMarkerSize;
+    return sizeDict; // 例：{customerMarkerSize: 10, shopMarkerSize: 30} マーカーが表示されてない場合、0が入る
+  }
+
+  //顧客マーカーモーダルのセレクトリセット
+  function resetCustomerModalSelect() {
+    $('.modal-body.marker').find(':checked').prop('checked', false); //チェックボックス全てリセット
+    $('#areaRadios1, #circle3').prop('checked', true).trigger('change'); //デフォルトでチェックが入る場所を入れる 選択肢の変更のためイベント無理やり発火
+    var lst = $('#selectShops').val();
+    if (lst.length > 0) { //スタッフ取得に時間がかかるので、選択肢が選ばれている場合のみ実行
+      $('#selectShops').selectpicker('val', '').trigger('change'); //店舗選択をリセット 選択肢の変更のためイベント無理やり発火
+    }
+    $('#selectStaff').selectpicker('val', ''); //スタッフ選択をリセット
+    $('#showShops').selectpicker('val', ''); //店舗位置の表示選択をリセット
+    $('#showOtherShops').selectpicker('val', ''); //候補地の表示選択をリセット
+    $('#serviceShops').selectpicker('val', ''); //サービス店舗の選択リセット
+    $('input[name="car_model"]').val(""); //型式の入力をリセット
+  }
+
+  //レイヤーの選択肢をリセット 現在不使用
+  function resetLayerModalSelect() {
+    $('.modal-body.layer').find(':checked').prop('checked', false).trigger('change'); //レイヤーのチェックを外し、選択肢をリセットするためイベント発火
+  }
+
+  //クリックされた店舗マーカーのIdから店舗詳細情報をAjaxにて取得し、画面に表示する
+  function showShopDetailData(shopId) {
+    dispLoading("処理中...");
+    $.ajax({
+      type: "POST",
+      url: "{% url 'gis:shop_detail' %}",
+      data: {
+        shop_id: shopId,
+      },
+      dataType: "json",
+    }).done(function (data) {
+      // console.log(data);
+      if (data.data == "True") {
+        inputShopDetailData(data); //店舗基本情報モーダルの中身をデータより変更
+        inputSalesResultData(data); //店舗基本情報の表の部分の書き込みをデータより行う
+        $('#ShopDetailModal').modal(); //モーダル表示
+      } else {
+        alert("クリックされた店舗に紐づく店舗基本情報がありません。管理サイト店舗マスタデータ(店舗基本情報データ)を確認してください。")
+      }
+    }).always(function () {
+      removeLoading();
+    });
+  }
+
+  //STT KINTO 20190619 ADD
+  //商圏別顧客数の表示ボタンアクション
+  function showCustomerCount() {
+    dispLoading("処理中...");
+    var stat = countCustNumOnArea(0);
+    if (stat) {
+      $('#CustomerCountModal').modal();
+    }
+    removeLoading();
+  }
+
+  //店舗の商圏範囲内範囲判定を行う mode: 0(モーダル表示), 1(凡例表示), それ以外(csvダウンロードajax発火)
+  function countCustNumOnArea(mode) {
+    //顧客重複カウント用変数５×５
+    var area_dup_cnt_ary = [
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0]
+    ];
+    //商圏別顧客数カウント用変数
+    var tempo_marker_cnt_ary = [0, 0, 0, 0, 0];
+    //顧客マーカーが表示状態であることをチェックする
+    if (!isAnyCustMarker()) {
+      var message = "顧客マーカーが表示されていません。顧客表示メニューにて条件を指定して顧客マーカーを表示してください。";
+      demo.showNotification('bottom', 'right', message);
+      return false;
+    }
+    //表示されているサークルのみをtargetCirclesとして取得する（商圏km複数の場合は最大のradiusのサークルのみ選別）
+    var targetCircles = getVisibleCircles(circles)
+    if (isEmpty(targetCircles)) { // サークルがなければがなければ警告
+      var message = "表示されている範囲内に商圏サークルの中心がありません。\n顧客表示メニューの「商圏範囲の表示」にて「同心円距離範囲」が選択されていることを確認し、対象としたい商圏サークルの中心が画面内に表示されるようマップを移動またはサイズ変更してください。";
+      demo.showNotification('bottom', 'right', message);
+      return false;
+    } else if (targetCircles.length > 5) {
+      var message = "表示されている商圏サークルが多すぎます。マップを移動またはサイズ変更し５つ以内に絞ってください。";
+      demo.showNotification('bottom', 'right', message);
+      // console.log('表示されている商圏サークルが多すぎます。5店舗以内に絞ってください');
+      return false;
+    }
+    var area_num = targetCircles.length;  //対象商圏数
+    var targetCustomerCnt = 0;  //総顧客数をカウント
+    var inAnyAreaCnt = 0; //どれかの商圏サークルにあればカウント
+    //マーカーを一つずつチェックしてカウントする
+    for (var i = 0; i < c_markers.length; i++) {
+      //console.log('Marker: ' + c_markers[i].label.text + ', position: ' + c_markers[i].getPosition());
+      var low_cnt = [0, 0, 0, 0, 0];  //対象マーカーがどの商圏サークル内にマッチしたかを一旦格納
+      var inAnyArea = 0;
+      var found;
+      if (c_markers[i].kind == 1) {//顧客マーカーのみ対象とする
+        targetCustomerCnt = targetCustomerCnt + 1; //顧客マーカー数を数えておく
+        for (var j = 0; j < area_num; j++) {
+          //console.log(targetCircles[j].tempo_name);
+          //Google Map API でマーカーがサークル内にあるか判定
+          if (google.maps.geometry.spherical.computeDistanceBetween(c_markers[i].getPosition(), targetCircles[j].getCenter()) <= targetCircles[j].getRadius()) {
+            //console.log('=> is in searchArea');
+            //console.log('Marker: ' + c_markers[i].title + ', position: ' + c_markers[i].getPosition());
+            low_cnt[j] = 1; //商圏サークル内にマッチしたこを記録
+            tempo_marker_cnt_ary[j] = tempo_marker_cnt_ary[j] + 1; //商圏別顧客数カウントを加算
+            inAnyArea = 1;
+          } else {
+            //console.log('=> is NOT in searchArea');
+            low_cnt[j] = 0;
+          }
+        }
+        if (inAnyArea) { //どこかにサークルに属す顧客数を加算
+          inAnyAreaCnt = inAnyAreaCnt + 1;
+        }
+        //重複テーブル５×５を更新
+        for (var tgt = 0; tgt < area_num; tgt++) {
+          if (low_cnt[tgt]) {
+            found = 0;
+            for (pair = 0; pair < 5; pair++) {
+              //A&X
+              if (low_cnt[pair] && tgt != pair) { //カウントありでX/Yが同じエリアでない場合
+                //その組み合わせのカウントを加算
+                area_dup_cnt_ary[tgt][pair] = area_dup_cnt_ary[tgt][pair] + 1;
+                found = 1;
+              }
+            }
+            if (!found) {
+              //どこにも重複されてなければ、重複していない商圏エリア（X=Yのセルです。実際は表示はしていないです。）
+              area_dup_cnt_ary[tgt][tgt] = area_dup_cnt_ary[tgt][tgt] + 1;
+            }
+          }
+        }
+        //console.log(low_cnt);
+      }
+    } //c_markers loop end
+    // console.log(area_dup_cnt_ary);  //顧客の商圏分布数（モーダルのメイン表示）
+    // console.log(tempo_marker_cnt_ary); //商圏範囲毎のマーカー数
+    // console.log(targetCustomerCnt); //対象顧客数（対象の全顧客）マーカー数
+    // console.log(inAnyAreaCnt); //対象商圏顧客数
+
+    //系列付き商圏名リストを取得します
+    var targetCircleNameList = makeTargetCircleNameList(targetCircles);
+
+    //表示モードの場合、数え終わったのでモーダル画面に書き込みます。
+    if (mode == 0) {
+      setCustomerCountModalText(area_dup_cnt_ary, tempo_marker_cnt_ary, targetCustomerCnt, inAnyAreaCnt, targetCircleNameList, targetCircles.length)
+    } else if (mode == 1) { // 凡例モード
+      setCustomerDistributionLegend(area_dup_cnt_ary, tempo_marker_cnt_ary, targetCustomerCnt, inAnyAreaCnt, targetCircleNameList, targetCircles.length)
+    } else {
+      //ダウンロードモードの場合、Ajaxにお願いします。
+      dldCustomerCountModalAjax(area_dup_cnt_ary, tempo_marker_cnt_ary, targetCustomerCnt, inAnyAreaCnt, targetCircleNameList, targetCircles.length)
+    }
+    return true;
+  }
+
+  //顧客マーカーがあるか判定
+  function isAnyCustMarker() {
+    for (var i = 0; i < c_markers.length; i++) {
+      if (c_markers[i].kind == 1) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  //表示領域内の店舗サークルを判定して返す（商圏km複数の場合は最大のradiusのサークルのみ選別）
+  function getVisibleCircles(circles) {
+    var ne = map.getBounds().getNorthEast();
+    var sw = map.getBounds().getSouthWest();
+    var targetCircles = []; //表示領域内の商圏入れ
+    var maxRadius = 0;
+
+    $.each(circles, function () { //複数商圏単位が選択されている場合一番おおきな円選択
+      if (this.radius > maxRadius) {
+        maxRadius = this.radius;
+      }
+    });
+    $.each(circles, function () {
+      if (this.radius == maxRadius &&
+        this.getCenter().lat() < ne.lat() &&
+        this.getCenter().lat() > sw.lat() &&
+        this.getCenter().lng() < ne.lng() &&
+        this.getCenter().lng() > sw.lng()) {
+        // console.log(this.tempo_name);
+        targetCircles.push(this);
+      }
+    });
+    return targetCircles;
+  }
+
+  //系列付き商圏名リストを取得します
+  function makeTargetCircleNameList(targetCircles) {
+    var area_num = targetCircles.length;  //対象商圏数
+    var targetCircleNameList = ['', '', '', '', ''];
+    // var keiretsu;
+
+    for (var i = 0; i < 5; i++) {
+      if (i < area_num) {
+        // MEMO: 系列頭文字は店舗テーブルのレコードに直接店舗名として登録済みなため下記コードは一旦コメントアウト
+        // switch (targetCircles[i].keiretsu) {
+        //   case 1:
+        //     keiretsu = 'P';
+        //     break;
+        //   case 2:
+        //     keiretsu = 'C';
+        //     break;
+        //   case 3:
+        //     keiretsu = 'N';
+        //     break;
+        //   case 4:
+        //     keiretsu = '';
+        //     break;
+        //   default:
+        //     keiretsu = '';
+        // }
+        // targetCircleNameList[i] = keiretsu + targetCircles[i].tempo_name;
+        targetCircleNameList[i] = targetCircles[i].tempo_name;
+      }
+    }
+    return targetCircleNameList;
+  }
+
+  //商圏分布モーダルへの表示データ書き込み処理
+  function setCustomerCountModalText(area_dup_cnt_ary, tempo_marker_cnt_ary, targetCustomerCnt, inAnyAreaCnt, targetCircleNameList, area_num) {
+
+    var tname1;
+    var tname2;
+    var cnum;
+    var cdata;
+
+    $('#tempo_cust_total').text(targetCustomerCnt); ///対象顧客数（対象の全顧客）セット
+    $('#tempo_cust_area_total').text(inAnyAreaCnt); //対象商圏顧客数セット
+    //店舗名には系列略称を頭につける
+    for (var i = 0; i < 5; i++) {
+      if (i < area_num) {
+        tname1 = targetCircleNameList[i] + '<br/>との重複';
+        tname2 = targetCircleNameList[i];
+      } else {
+        tname1 = '';
+        tname2 = '';
+      }
+      $('#1_tempo_area_name_r_' + i).html(tname1);
+      $('#1_tempo_area_name_c_' + i).html(tname2);
+      for (var j = 0; j < 5; j++) {
+        if (j < area_num && i < area_num) {
+          if (0) { //if(i==j){　出したくない場合は切り替え
+            cnum = '-<br>-';
+          } else {
+            if (tempo_marker_cnt_ary[i] > 0) {
+              cdata = area_dup_cnt_ary[i][j] / tempo_marker_cnt_ary[i] * 100;
+            } else {
+              cdata = 0;
+            }
+            cnum = area_dup_cnt_ary[i][j] + '<br/>' + (cdata).toFixed(1) + '%';
+          }
+        } else {
+          cnum = '';
+        }
+        $('#1_cust_total_r' + i + '_' + j).html(cnum);
+      }
+    }
+    for (var i = 0; i < 5; i++) {
+      if (i < area_num) {
+        cnum = tempo_marker_cnt_ary[i] + '<br>-';
+        $('#tempo_r' + i).show();
+      } else {
+        cnum = '';
+        $('#tempo_r' + i).hide();
+      }
+      $('#1_cust_total_r' + i + '_x').html(cnum);
+    }
+  }
+
+  // 地図内の商圏分布表示のため、DOMへの表示データを書き込む処理
+  function setCustomerDistributionLegend(area_dup_cnt_ary, tempo_marker_cnt_ary, targetCustomerCnt, inAnyAreaCnt, targetCircleNameList, area_num) {
+    var tname1;
+    var tname2;
+    var cnum;
+    var cdata;
+
+    $('#legend_tempo_cust_total').text(targetCustomerCnt); ///対象顧客数（対象の全顧客）セット
+    $('#legend_tempo_cust_area_total').text(inAnyAreaCnt); //対象商圏顧客数セット
+    //店舗名には系列略称を頭につける
+    for (var i = 0; i < 5; i++) {
+      if (i < area_num) {
+        tname1 = targetCircleNameList[i] + '<br/>との重複';
+        tname2 = targetCircleNameList[i];
+      } else {
+        tname1 = '';
+        tname2 = '';
+      }
+      $('#legend_1_tempo_area_name_r_' + i).html(tname1);
+      $('#legend_1_tempo_area_name_c_' + i).html(tname2);
+      for (var j = 0; j < 5; j++) {
+        if (j < area_num && i < area_num) {
+          if (0) { //if(i==j){　出したくない場合は切り替え
+            cnum = '-<br>-';
+          } else {
+            if (tempo_marker_cnt_ary[i] > 0) {
+              cdata = area_dup_cnt_ary[i][j] / tempo_marker_cnt_ary[i] * 100;
+            } else {
+              cdata = 0;
+            }
+            cnum = area_dup_cnt_ary[i][j] + '<br/>' + (cdata).toFixed(1) + '%';
+          }
+        } else {
+          cnum = '';
+        }
+        $('#legend_1_cust_total_r' + i + '_' + j).html(cnum);
+      }
+    }
+    for (var i = 0; i < 5; i++) {
+      if (i < area_num) {
+        cnum = tempo_marker_cnt_ary[i] + '<br>-';
+        $('#legend_tempo_r' + i).show();
+      } else {
+        cnum = '';
+        $('#legend_tempo_r' + i).hide();
+      }
+      $('#legend_1_cust_total_r' + i + '_x').html(cnum);
+    }
+  }
+
+  //商圏分布をダウンロード（Ajax通信なし、クライアント完結）
+  function dldCustomerCountModalAjax(area_dup_cnt_ary, tempo_marker_cnt_ary, targetCustomerCnt, inAnyAreaCnt, targetCircleNameList, area_num) {
+
+    var crcf = "\r\n";
+    var title = "商圏別顧客分布,,,,,,";
+    var space = ",,,,,,";
+    var head1 = "総入庫台数：," + targetCustomerCnt + ",,,,,";
+    var head2 = "対象商圏内入庫台数：," + inAnyAreaCnt + ",,,,,";
+    var line1 = "商圏,商圏内総数";
+    var lines = "";
+    var food1 = "※上段：入庫台数　下段：重複率,,,,,,";
+    var food2 = "※同一商圏同士の重複セルの値は、その商圏のみでカバーしている入庫数,,,,,,";
+    var cdata;
+
+    //ヘッダ
+    var text = title + crcf + space + crcf + head1 + crcf + head2 + crcf + crcf;
+    //表の行ヘッダ
+    for (var i = 0; i < area_num; i++) {
+      line1 = line1 + "," + targetCircleNameList[i];
+    }
+    text = text + line1 + crcf;
+
+    //データ行
+    for (var i = 0; i < area_num; i++) {
+      lines = lines + targetCircleNameList[i] + ',' + tempo_marker_cnt_ary[i];
+      for (var j = 0; j < area_num; j++) {
+        lines = lines + "," + area_dup_cnt_ary[i][j];
+      }
+      lines = lines + crcf;
+      lines = lines + ",-";
+      for (var j = 0; j < area_num; j++) {
+        if (tempo_marker_cnt_ary[i] > 0) {
+          cdata = area_dup_cnt_ary[i][j] / tempo_marker_cnt_ary[i] * 100;
+        } else {
+          cdata = 0;
+        }
+        lines = lines + "," + (cdata).toFixed(1) + '%';
+      }
+      lines = lines + crcf;
+    }
+    text = text + lines + crcf + food1 + crcf + food2 + crcf;
+    const unicodeList = [];
+    for (let i = 0; i < text.length; i += 1) {
+      unicodeList.push(text.charCodeAt(i));
+    }
+    // 変換処理の実施
+    const shiftJisCodeList = Encoding.convert(unicodeList, 'sjis', 'unicode');
+    const uInt8List = new Uint8Array(shiftJisCodeList);
+
+    var blob = new Blob([uInt8List], { type: "text/csv" }); // バイナリデータを作ります。
+    var now = new Date();
+    var filename = "GisCustCount_" + now.getFullYear() + (now.getMonth() + 1) + now.getDate() + now.getHours() + now.getMinutes() + now.getSeconds() + ".csv";
+    // IEか他ブラウザかの判定
+    if (window.navigator.msSaveBlob) {
+      // IEなら独自関数を使います。
+      window.navigator.msSaveBlob(blob, filename);
+    } else {
+      // それ以外はaタグを利用してイベントを発火させます
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.target = '_blank';
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+  }
+  //END KINTO 20190619 ADD 商圏別顧客数の表示切替
+
+  // 印刷プレビュー表示処理
+  function printAnyMaps() {
+    const $body = $('body');
+    const $mapContainer = $('.map-container');
+    const $mapContainerParent = $mapContainer.parent();
+    const $printContainer = $('<div style="position:relative;">');
+
+    $printContainer
+      .height($mapContainer.height())
+      .append($mapContainer)
+      .prependTo($body);
+
+    const $content = $body
+      .children()
+      .not($printContainer)
+      .not('script')
+      .detach();
+
+    /**
+     * Needed for those who use Bootstrap 3.x, because some of
+     * its `@media print` styles ain't play nicely when printing.
+     */
+    // googlemap javascript api で表示されるマップでchromeなどで印刷時にマップが帯状に抜ける問題あり
+    // https://qiita.com/miyawash/items/88a55be803fbde98b402
+    // 上記のURL先の対処法を参考に、下記imgタグにposition: absoluteを付与した
+    const $patchedStyle = $('<style media="print">')
+      .text(`
+        img { max-width: none !important; max-height: none !important; position: absolute;}
+        a[href]:after { content: ""; }
+      `)
+      .appendTo('head');
+    $mapContainer.addClass('print-style');
+
+    window.print();
+
+    $body.prepend($content);
+    $mapContainerParent.prepend($mapContainer);
+
+    $printContainer.remove();
+    $patchedStyle.remove();
+    $mapContainer.removeClass('print-style');
+  }
+
+</script>
+
+<!-- 定数javascriptファイル、共通機能javascriptファイルの読込 -->
+<script src="{% static 'js/constant.js' %}"></script>
+<script src="{% static 'js/common.js' %}"></script>
+<script src="{% static 'js/encoding.min.js' %}"></script>
+
+{% endblock javascript %}

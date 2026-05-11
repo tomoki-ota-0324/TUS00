@@ -1,0 +1,566 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card ">
+        <div class="card-header ">
+          <h4 class="card-title">マイリスト作成</h4>
+        </div>
+        <div class="card-body ">
+          <form method="POST" action="{% url 'gis:create_attack' %}" class="form-horizontal">
+            {% csrf_token %}
+            <div class="row">
+              <label class="col-sm-2 col-form-label">新しいリストの</br>タイトル</label>
+              <div class="col-sm-10">
+                <div class="form-group">
+                  <input type="text" class="form-control" name="title">
+                  <!-- <span class="form-text">A block of help text that breaks onto a new line.</span> -->
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">顧客種別</label>
+              <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="rank_kinds" value="SS">
+                    <span class="form-check-sign"></span>
+                    SS層
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="rank_kinds" value="S">
+                    <span class="form-check-sign"></span>
+                    S層
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="rank_kinds" value="A">
+                    <span class="form-check-sign"></span>
+                    A層
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="rank_kinds" value="B">
+                    <span class="form-check-sign"></span>
+                    B層
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="rank_kinds" value="C">
+                    <span class="form-check-sign"></span>
+                    C層
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="rank_kinds" value="D">
+                    <span class="form-check-sign"></span>
+                    D層
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">購入タイプ</label>
+              <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_kinds" value="1">
+                    <span class="form-check-sign"></span>
+                    新車
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_kinds" value="2">
+                    <span class="form-check-sign"></span>
+                    中古車
+                  </label>
+                </div>
+                <!-- <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_kinds" value="3">
+                    <span class="form-check-sign"></span>
+                    レクサス
+                  </label>
+                </div> -->
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">車検時期</label>
+              <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="inspection_limits" value="3">
+                    <span class="form-check-sign"></span>
+                    N-3
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="inspection_limits" value="6">
+                    <span class="form-check-sign"></span>
+                    N-6
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="inspection_limits" value="9">
+                    <span class="form-check-sign"></span>
+                    N-9
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">複数選択リスト</label>
+              <div class="col-lg-3 col-md-6 col-sm-3">
+                <select class="selectpicker" data-style="btn btn-info btn-round" multiple title="車種選択" data-size="7" name="car_type">
+                  <option disabled>車種選択</option>
+                  {% for car in car_types %}
+                    <option value="{{car}}">{{car}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-3">
+                <select class="selectpicker" data-style="btn btn-info btn-round" multiple title="店舗選択" data-size="7" name="shops">
+                  <option disabled>店舗選択</option>
+                  {% for shop in shops %}
+                  <option value="{{shop.id}}">{{shop.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <!-- <div class="col-lg-3 col-md-6 col-sm-3">
+                <select class="selectpicker" data-style="btn btn-info btn-round" multiple title="エリア選択" data-size="7">
+                  <option disabled>エリア選択</option>
+                  <option value="2">静岡市葵区</option>
+                  <option value="3">静岡市駿河区</option>
+                  <option value="4">静岡市清水区</option>
+                  <option value="5">藤枝市</option>
+                </select>
+              </div> -->
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">最終接触日</label>
+              <div class="col-lg-10 col-md-6 col-sm-4 ">
+                <select class="selectpicker" data-size="7" data-style="btn btn-primary btn-round" title="Single Select" name="last_contact_date_start">
+                  <option value="0" selected>下限なし</option>
+                  <option value="1">1ヵ月以上</option>
+                  <option value="3">3ヵ月以上</option>
+                  <option value="5">5ヵ月以上</option>
+                  <option value="7">7ヵ月以上</option>
+                  <option value="9">9ヵ月以上</option>
+                  <option value="10">10ヵ月以上</option>
+                  <option value="12">1年以上</option>
+                  <option value="24">2年以上</option>
+                  <option value="36">3年以上</option>
+                </select>
+                <span>　～　</span>
+                <select class="selectpicker" data-size="7" data-style="btn btn-primary btn-round" title="Single Select" name="last_contact_date_end">
+                  <option value="0" selected>上限なし</option>
+                  <option value="1">1ヵ月未満</option>
+                  <option value="3">3ヵ月未満</option>
+                  <option value="5">5ヵ月未満</option>
+                  <option value="7">7ヵ月未満</option>
+                  <option value="9">9ヵ月未満</option>
+                  <option value="10">10ヵ月未満</option>
+                  <option value="12">1年未満</option>
+                  <option value="24">2年未満</option>
+                  <option value="36">3年未満</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">初回登録日</label>
+              <div class="col-lg-10 col-md-6 col-sm-4 ">
+                <select class="selectpicker" data-size="7" data-style="btn btn-primary btn-round" title="Single Select" name="car_registration_date_start">
+                  <option value="0" selected>下限なし</option>
+                  <option value="1">1年以上</option>
+                  <option value="2">2年以上</option>
+                  <option value="3">3年以上</option>
+                  <option value="4">4年以上</option>
+                  <option value="5">5年以上</option>
+                  <option value="6">6年以上</option>
+                  <option value="7">7年以上</option>
+                  <option value="8">8年以上</option>
+                  <option value="9">9年以上</option>
+                  <option value="10">10年以上</option>
+                </select>
+                <span>　～　</span>
+                <select class="selectpicker" data-size="7" data-style="btn btn-primary btn-round" title="Single Select" name="car_registration_date_end">
+                  <option value="0" selected>上限なし</option>
+                  <option value="1">1年未満</option>
+                  <option value="2">2年未満</option>
+                  <option value="3">3年未満</option>
+                  <option value="4">4年未満</option>
+                  <option value="5">5年未満</option>
+                  <option value="6">6年未満</option>
+                  <option value="7">7年未満</option>
+                  <option value="8">8年未満</option>
+                  <option value="9">9年未満</option>
+                  <option value="10">10年未満</option>
+                </select>
+              </div>
+            </div>
+            <!-- <div class="row">
+              <label class="col-sm-2 col-form-label">最終訪問期間</label>
+              <div class="col-lg-4 col-md-4 col-sm-2">
+                <div class="form-group">
+                  <input type="text" class="form-control datepicker" name="last_contact_date1">
+                </div>
+              </div>
+              <span class="col-sm-1">～</span>
+              <div class="col-lg-4 col-md-4 col-sm-2">
+                <div class="form-group">
+                  <input type="text" class="form-control datepicker" name="last_contact_date2">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">初回登録日</label>
+              <div class="col-lg-4 col-md-4 col-sm-2">
+                <div class="form-group">
+                  <input type="text" class="form-control datepicker" name="car_registration_date1">
+                </div>
+              </div>
+              <span class="col-sm-1">～</span>
+              <div class="col-lg-4 col-md-4 col-sm-2">
+                <div class="form-group">
+                  <input type="text" class="form-control datepicker" name="car_registration_date2">
+                </div>
+              </div>
+            </div> -->
+            <div class="row">
+              <label class="col-sm-2 col-form-label">カレンダー（未実装）</label>
+              <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox">
+                    <span class="form-check-sign"></span>
+                    昨年配布済み
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox">
+                    <span class="form-check-sign"></span>
+                    昨年未配布
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox">
+                    <span class="form-check-sign"></span>
+                    今年配布済み
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox">
+                    <span class="form-check-sign"></span>
+                    今年未配布
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">ブラックリスト</br>（未実装）</label>
+              <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox">
+                    <span class="form-check-sign"></span>
+                    対象顧客を含む
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox">
+                    <span class="form-check-sign"></span>
+                    対象顧客を含まない
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox">
+                    <span class="form-check-sign"></span>
+                    対象顧客のみ
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">色分け対象（未実装）</label>
+              <div class="col-sm-10 checkbox-radios">
+                <div class="form-check-radio form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="colorRadioz" id="colorRadios1" value="0" checked> なし
+                    <span class="form-check-sign"></span>
+                  </label>
+                </div>
+                <div class="form-check-radio form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="colorRadioz" id="colorRadios2" value="1"> 顧客種別
+                    <span class="form-check-sign"></span>
+                  </label>
+                </div>
+                <div class="form-check-radio form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="colorRadioz" id="colorRadios3" value="2"> 購入タイプ
+                    <span class="form-check-sign"></span>
+                  </label>
+                </div>
+                <div class="form-check-radio form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="colorRadioz" id="colorRadios4" value="3"> 車検時期
+                    <span class="form-check-sign"></span>
+                  </label>
+                </div>
+                <div class="form-check-radio form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="colorRadioz" id="colorRadios5" value="4"> カレンダー
+                    <span class="form-check-sign"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer text-center">
+              <input type="hidden" name="mylist" value="true">
+              <button type="submit" class="btn btn-primary"><span><i class="fa fa-save"></i></span>  マイリストを保存する</button>
+              <button type="button" class="btn btn-primary" name="saveSearch"><span><i class="nc-icon nc-zoom-split"></i></span>  この検索条件を保存する(未実装)</button>
+            </div>
+          <!-- </form> -->
+        </div>
+      </div>
+      <!-- <div class="card">
+        <form method="POST" action="">
+          {% csrf_token %}
+          <input type="hidden" name="title" value="{{title}}">
+          <div class="card-header">
+            <h4 class="card-title">検索結果</h4>
+          </div>
+          <div class="card-body">
+            <table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>住所</th>
+                  <th>顧客層</th>
+                  <th>初回登録日</th>
+                  <th>車種</th>
+                  <th>車検満期日</th>
+                  <th>最終接触日</th>
+                  <th class="disabled-sorting text-right">Actions</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>住所</th>
+                  <th>顧客層</th>
+                  <th>初回登録日</th>
+                  <th>車種</th>
+                  <th>車検満期日</th>
+                  <th>最終接触日</th>
+                  <th class="disabled-sorting text-right">Actions</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                {% for customer in customers %}
+                <tr>
+                  <td>{{customer.address}}</td>
+                  <td>{{customer.rank_kind}}</td>
+                  <td>{{customer.car_registration_date}}</td>
+                  <td>{{customer.car_type}}</td>
+                  <td>{{customer.inspection_date}}</td>
+                  <td>{{customer.last_contact_date}}</td>
+                  <td class="text-right">
+                    <a href="#" class="btn btn-info btn-link btn-icon btn-sm like"><i class="fa fa-heart"></i></a>
+                    <a href="#" class="btn btn-warning btn-link btn-icon btn-sm edit"><i class="fa fa-edit"></i></a>
+                    <a href="#" class="btn btn-danger btn-link btn-icon btn-sm remove"><i class="fa fa-times"></i></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <input type="hidden" name="customer_ids" value="">
+          <div class="card-footer text-center">
+            <button type="submit" class="btn btn-primary" name="mylist" value="save">アタックリストを保存する</button>
+          </div>
+        </form>
+      </div> -->
+      <!--  end card  -->
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{%block javascript%}
+<script>
+$(document).ready(function() {
+
+  //add active class for selected in side bar
+  $('li.attack_list').addClass('active');
+  $('li.attack_list').children('a').attr('aria-expanded', 'true');
+  $('#attackList').addClass('show');
+  sidebar.addActiveClass("{% url 'gis:create_attack' %}");
+
+  //セレクトボタンかセレクトボックスが選択されたとき
+  $('input[type="checkbox"], select[class="selectpicker"]').on('change', function() {
+    //上限下限Valueのチェック
+    // checkSelectValue();
+    //顧客絞込
+    getSearchCustomer();
+  });
+
+  //検索条件保存ボタンが押されたとき
+  $('button[name="saveSearch"]').on('click', function() {
+    // saveSearchCustomer();
+  });
+
+  // initialise Datetimepicker
+  // demo.initDateTimePicker();
+
+  // $('#datatable').DataTable({
+  //   "pagingType": "full_numbers",
+  //   "lengthMenu": [
+  //     [10, 25, 50, -1],
+  //     [10, 25, 50, "All"]
+  //   ],
+  //   responsive: true,
+  //   language: {
+  //     search: "_INPUT_",
+  //     searchPlaceholder: "Search records",
+  //   }
+
+  // });
+
+  // var table = $('#datatable').DataTable();
+
+  // // Edit record
+  // table.on('click', '.edit', function() {
+  //   $tr = $(this).closest('tr');
+
+  //   var data = table.row($tr).data();
+  //   alert('You press on Row: ' + data[0] + ' ' + data[1] + ' ' + data[2] + '\'s row.');
+  // });
+
+  // // Delete a record
+  // table.on('click', '.remove', function(e) {
+  //   $tr = $(this).closest('tr');
+  //   table.row($tr).remove().draw();
+  //   e.preventDefault();
+  // });
+
+  // //Like record
+  // table.on('click', '.like', function() {
+  //   alert('You clicked on Like button');
+  // });
+
+  //dataTable records 
+  // $('#datatable').on('draw.dt', function() {
+  //   console.log("発火");
+  //   var data = table.fnGetData();
+  //   $('input:hidden[name="customer_ids"]').val(data);
+  // });
+
+});
+
+//上限、下限選択が逆転している場合に選択している選択肢を正しく入れなおす処理を書く
+function checkSelectValue() {
+  var last_contact_date_start = $('select[name="last_contact_date_start"]').val(); //最終訪問下限
+  var last_contact_date_end = $('select[name="last_contact_date_end"]').val(); //最終訪問上限
+  var car_registration_date_start = $('select[name="car_registration_date_start"]').val(); //初回登録日下限
+  var car_registration_date_end = $('select[name="car_registration_date_end"]').val(); //初回登録日上限
+
+}
+
+// 選択肢からAjaxにて顧客を絞込
+function getSearchCustomer() {
+  var rank_kinds = [];
+  $('input[name="rank_kinds"]:checked').each(function(){rank_kinds.push(this.value);}); //顧客層
+  var sale_kinds = [];
+  $('input[name="sale_kinds"]:checked').each(function(){sale_kinds.push(this.value);}); //販売形態
+  var inspection_limits = [];
+  $('input[name="inspection_limits"]:checked').each(function(){inspection_limits.push(this.value);}); //車検
+  var car_type = $('select[name="car_type"]').val(); //車種
+  var shops = $('select[name="shops"]').val(); //店舗
+  var last_contact_date = [];
+  last_contact_date.push($('select[name="last_contact_date_start"]').val()); //最終訪問下限
+  last_contact_date.push($('select[name="last_contact_date_end"]').val()); //最終訪問上限
+  var car_registration_date = [];
+  car_registration_date.push($('select[name="car_registration_date_start"]').val()); //初回登録日下限
+  car_registration_date.push($('select[name="car_registration_date_end"]').val()); //初回登録日上限
+  console.log(rank_kinds);
+  console.log(car_type);
+
+  $.ajax({
+    type: "POST",
+    url: "{% url 'gis:search_customer' %}",
+    data: {
+      mylist: "false",
+      rank_kinds: rank_kinds,
+      sale_kinds: sale_kinds,
+      inspection_limits: inspection_limits,
+      car_type: car_type,
+      shops: shops,
+      last_contact_date: last_contact_date,
+      car_registration_date: car_registration_date,
+    },
+    dataType: "json"
+  }).done(function(data) {
+    console.log(data.len);
+    console.log(data.customers);
+    var message = "検索マッチ件数：" + data.len + " 件";
+    demo.showNotification('bottom','right', message);
+  });
+}
+
+//検索条件の保存
+function saveSearchCustomer() {
+  var rank_kinds = [];
+  $('input[name="rank_kinds"]:checked').each(function(){rank_kinds.push(this.value);}); //顧客層
+  var sale_kinds = [];
+  $('input[name="sale_kinds"]:checked').each(function(){sale_kinds.push(this.value);}); //販売形態
+  var inspection_limits = [];
+  $('input[name="inspection_limits"]:checked').each(function(){inspection_limits.push(this.value);}); //車検
+  var car_type = $('select[name="car_type"]').val(); //車種
+  var shops = $('select[name="shops"]').val(); //店舗
+  var last_contact_date = [];
+  last_contact_date.push($('select[name="last_contact_date_start"]').val()); //最終訪問下限
+  last_contact_date.push($('select[name="last_contact_date_end"]').val()); //最終訪問上限
+  var car_registration_date = [];
+  car_registration_date.push($('select[name="car_registration_date_start"]').val()); //初回登録日下限
+  car_registration_date.push($('select[name="car_registration_date_end"]').val()); //初回登録日上限
+  console.log(rank_kinds);
+  console.log(car_type);
+
+  $.ajax({
+    type: "POST",
+    url: "",
+    data: {
+      rank_kinds: rank_kinds,
+      sale_kinds: sale_kinds,
+      inspection_limits: inspection_limits,
+      car_type: car_type,
+      shops: shops,
+      last_contact_date: last_contact_date,
+      car_registration_date: car_registration_date,
+    },
+    dataType: "json"
+  }).done(function() {
+    var message = "検索条件を保存しました。";
+    demo.showNotification('bottom','right', message);
+  });
+}
+
+  
+</script>
+{%endblock javascript%}

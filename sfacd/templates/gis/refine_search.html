@@ -1,0 +1,1516 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card ">
+        <div class="card-header ">
+          <h4 class="card-title">絞込検索</h4>
+        </div>
+        <div class="card-body ">
+          <form method="POST" action="{% url 'gis:main_maps' %}" class="form-horizontal">
+            {% csrf_token %}
+
+            <h6 class="card-subtitle mb-2 text-muted">顧客</h6>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">顧客種別</label>
+              <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="rank_kinds" value="SS">
+                    <span class="form-check-sign"></span>
+                    SS層
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="rank_kinds" value="S">
+                    <span class="form-check-sign"></span>
+                    S層
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="rank_kinds" value="A">
+                    <span class="form-check-sign"></span>
+                    A層
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="rank_kinds" value="B">
+                    <span class="form-check-sign"></span>
+                    B層
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="rank_kinds" value="C">
+                    <span class="form-check-sign"></span>
+                    C層
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="rank_kinds" value="D">
+                    <span class="form-check-sign"></span>
+                    D層
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">固定客</label>
+              <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="fix_customer" value="0">
+                    <span class="form-check-sign"></span>
+                    一般客
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="fix_customer" value="1">
+                    <span class="form-check-sign"></span>
+                    新車客
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="fix_customer" value="2">
+                    <span class="form-check-sign"></span>
+                    準固定客
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="fix_customer" value="3">
+                    <span class="form-check-sign"></span>
+                    固定客
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">市区郡</label>
+              <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    静岡市葵区
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    静岡市駿河区
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    静岡市清水区
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    浜松市中区
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    浜松市東区
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    浜松市西区
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    浜松市南区
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    浜松市北区
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    浜松市浜北区
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    浜松市天竜区
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    沼津市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    熱海市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    三島市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    富士宮市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    伊東市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    島田市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    富士市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    磐田市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    焼津市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    掛川市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    藤枝市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    御殿場市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    袋井市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    下田市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    裾野市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    湖西市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    伊豆市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    御前崎市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    菊川市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    伊豆の国市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    牧之原市
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    賀茂郡
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    田方郡
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    駿東郡
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    榛原郡
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="city_name" value="">
+                    <span class="form-check-sign"></span>
+                    周智郡
+                  </label>
+                </div>
+              </div>
+            </div>
+            </br>
+            <h6 class="card-subtitle mb-2 text-muted">車両</h6>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">車両名</label>
+              <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    アクア
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    タンク
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    ポルテ
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    MIRAI
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    カムリ
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    プリウス
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    プリウスPHV
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    プレミオ
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    マークX
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    ハリアー
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    C-HR
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    アルファード
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    エスクァイア
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    シエンタ
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    ハイエース ワゴン
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    プリウスα
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    86
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    サクシード
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    トヨエース カーゴ
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    トヨエース ダンプ
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    トヨエース ルートバン
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    ハイエース コミューター
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    ハイエース バン
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="car_type" value="">
+                    <span class="form-check-sign"></span>
+                    ジャパンタクシー
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">初度登録日</label>
+              <div class="col-lg-10 col-md-6 col-sm-4 ">
+                <select class="selectpicker" data-size="7" data-style="btn btn-primary btn-round" title="Single Select" name="car_registration_date_bottom">
+                  <option value="0" selected>下限なし</option>
+                  <option value="1">1年以上</option>
+                  <option value="2">2年以上</option>
+                  <option value="3">3年以上</option>
+                  <option value="4">4年以上</option>
+                  <option value="5">5年以上</option>
+                  <option value="6">6年以上</option>
+                  <option value="7">7年以上</option>
+                  <option value="8">8年以上</option>
+                  <option value="9">9年以上</option>
+                  <option value="10">10年以上</option>
+                </select>
+                <span>　～　</span>
+                <select class="selectpicker" data-size="7" data-style="btn btn-primary btn-round" title="Single Select" name="car_registration_date_top">
+                  <option value="0" selected>上限なし</option>
+                  <option value="1">1年未満</option>
+                  <option value="2">2年未満</option>
+                  <option value="3">3年未満</option>
+                  <option value="4">4年未満</option>
+                  <option value="5">5年未満</option>
+                  <option value="6">6年未満</option>
+                  <option value="7">7年未満</option>
+                  <option value="8">8年未満</option>
+                  <option value="9">9年未満</option>
+                  <option value="10">10年未満</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">U-Car登録日</label>
+              <div class="col-lg-10 col-md-6 col-sm-4 ">
+                <select class="selectpicker" data-size="7" data-style="btn btn-primary btn-round" title="Single Select" name="ucar_registration_date_bottom">
+                  <option value="0" selected>下限なし</option>
+                  <option value="1">1年以上</option>
+                  <option value="2">2年以上</option>
+                  <option value="3">3年以上</option>
+                  <option value="4">4年以上</option>
+                  <option value="5">5年以上</option>
+                  <option value="6">6年以上</option>
+                  <option value="7">7年以上</option>
+                  <option value="8">8年以上</option>
+                  <option value="9">9年以上</option>
+                  <option value="10">10年以上</option>
+                </select>
+                <span>　～　</span>
+                <select class="selectpicker" data-size="7" data-style="btn btn-primary btn-round" title="Single Select" name="ucar_registration_date_top">
+                  <option value="0" selected>上限なし</option>
+                  <option value="1">1年未満</option>
+                  <option value="2">2年未満</option>
+                  <option value="3">3年未満</option>
+                  <option value="4">4年未満</option>
+                  <option value="5">5年未満</option>
+                  <option value="6">6年未満</option>
+                  <option value="7">7年未満</option>
+                  <option value="8">8年未満</option>
+                  <option value="9">9年未満</option>
+                  <option value="10">10年未満</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">車検満了日</label>
+              <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="inspection_limits" value="3">
+                    <span class="form-check-sign"></span>
+                    N-3
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="inspection_limits" value="6">
+                    <span class="form-check-sign"></span>
+                    N-6
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="inspection_limits" value="9">
+                    <span class="form-check-sign"></span>
+                    N-9
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">新中</label>
+              <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_kind" value="1">
+                    <span class="form-check-sign"></span>
+                    新車
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_kind" value="2">
+                    <span class="form-check-sign"></span>
+                    中古車
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">販売店舗</label>
+              <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    静岡長沼店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    静岡いろは店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    静岡南店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    清水東名店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    清水桜橋店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    藤枝店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    藤枝築地店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    焼津大富店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    榛原静波店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    U-Car清水店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    U-Car中原店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    U-Car藤枝店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    沼津平町店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    沼津バイパスみどりが丘店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    富士伝法店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    富士店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    富士宮店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    裾野店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    御殿場店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    三島店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    大仁店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    伊東店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    下田店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    U-Car沼津バイパスみどりが丘店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    浜松宮竹店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    浜松東若林店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    浜松志都呂店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    浜松有玉店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    浜北店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    磐田店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    袋井店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    掛川店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    小笠店
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="sale_shop" value="">
+                    <span class="form-check-sign"></span>
+                    U-Car浜松有玉店
+                  </label>
+                </div>
+              </div>
+            </div>
+            </br>
+            <h6 class="card-subtitle mb-2 text-muted">デイリー</h6>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">活動期限</label>
+              <div class="col-lg-10 col-md-6 col-sm-4 ">
+                <select class="selectpicker" data-size="7" data-style="btn btn-primary btn-round" title="Single Select" name="active_limit_bottom">
+                  <option value="0" selected>下限なし</option>
+                  <option value="1">1ヵ月以上</option>
+                  <option value="3">3ヵ月以上</option>
+                  <option value="5">5ヵ月以上</option>
+                  <option value="7">7ヵ月以上</option>
+                  <option value="9">9ヵ月以上</option>
+                  <option value="10">10ヵ月以上</option>
+                  <option value="12">1年以上</option>
+                  <option value="24">2年以上</option>
+                  <option value="36">3年以上</option>
+                </select>
+                <span>　～　</span>
+                <select class="selectpicker" data-size="7" data-style="btn btn-primary btn-round" title="Single Select" name="active_limit_top">
+                  <option value="0" selected>上限なし</option>
+                  <option value="1">1ヵ月未満</option>
+                  <option value="3">3ヵ月未満</option>
+                  <option value="5">5ヵ月未満</option>
+                  <option value="7">7ヵ月未満</option>
+                  <option value="9">9ヵ月未満</option>
+                  <option value="10">10ヵ月未満</option>
+                  <option value="12">1年未満</option>
+                  <option value="24">2年未満</option>
+                  <option value="36">3年未満</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">接触日</label>
+              <div class="col-lg-10 col-md-6 col-sm-4 ">
+                <select class="selectpicker" data-size="7" data-style="btn btn-primary btn-round" title="Single Select" name="last_contact_date_bottom">
+                  <option value="0" selected>下限なし</option>
+                  <option value="1">1ヵ月以上</option>
+                  <option value="3">3ヵ月以上</option>
+                  <option value="5">5ヵ月以上</option>
+                  <option value="7">7ヵ月以上</option>
+                  <option value="9">9ヵ月以上</option>
+                  <option value="10">10ヵ月以上</option>
+                  <option value="12">1年以上</option>
+                  <option value="24">2年以上</option>
+                  <option value="36">3年以上</option>
+                </select>
+                <span>　～　</span>
+                <select class="selectpicker" data-size="7" data-style="btn btn-primary btn-round" title="Single Select" name="last_contact_date_top">
+                  <option value="0" selected>上限なし</option>
+                  <option value="1">1ヵ月未満</option>
+                  <option value="3">3ヵ月未満</option>
+                  <option value="5">5ヵ月未満</option>
+                  <option value="7">7ヵ月未満</option>
+                  <option value="9">9ヵ月未満</option>
+                  <option value="10">10ヵ月未満</option>
+                  <option value="12">1年未満</option>
+                  <option value="24">2年未満</option>
+                  <option value="36">3年未満</option>
+                </select>
+              </div>
+            </div>
+            <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+              <div class="card card-plain">
+                <div class="card-header" role="tab" id="headingTwo">
+                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    詳細な絞込条件を追加する
+                    <i class="nc-icon nc-minimal-down"></i>
+                  </a>
+                </div>
+                <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                  <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">顧客</h6>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">性別</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="customer_sex" value="0">
+                            <span class="form-check-sign"></span>
+                            男性
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="customer_sex" value="1">
+                            <span class="form-check-sign"></span>
+                            女性
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">誕生月</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="customer_birth_month" value="">
+                            <span class="form-check-sign"></span>
+                            1月
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="customer_birth_month" value="">
+                            <span class="form-check-sign"></span>
+                            2月
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="customer_birth_month" value="">
+                            <span class="form-check-sign"></span>
+                            3月
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="customer_birth_month" value="">
+                            <span class="form-check-sign"></span>
+                            4月
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="customer_birth_month" value="">
+                            <span class="form-check-sign"></span>
+                            5月
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="customer_birth_month" value="">
+                            <span class="form-check-sign"></span>
+                            6月
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="customer_birth_month" value="">
+                            <span class="form-check-sign"></span>
+                            7月
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="customer_birth_month" value="">
+                            <span class="form-check-sign"></span>
+                            8月
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="customer_birth_month" value="">
+                            <span class="form-check-sign"></span>
+                            9月
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="customer_birth_month" value="">
+                            <span class="form-check-sign"></span>
+                            10月
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="customer_birth_month" value="">
+                            <span class="form-check-sign"></span>
+                            11月
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="customer_birth_month" value="">
+                            <span class="form-check-sign"></span>
+                            12月
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">郵便番号</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="post_code" value="0">
+                            <span class="form-check-sign"></span>
+                            変更する
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">DM返却</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="dm_return" value="0">
+                            <span class="form-check-sign"></span>
+                            0回
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="dm_return" value="0">
+                            <span class="form-check-sign"></span>
+                            1~3回
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="dm_return" value="0">
+                            <span class="form-check-sign"></span>
+                            4~6回
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="dm_return" value="0">
+                            <span class="form-check-sign"></span>
+                            7~9回
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="dm_return" value="0">
+                            <span class="form-check-sign"></span>
+                            10回以上
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">勤務先名</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="company" value="0">
+                            <span class="form-check-sign"></span>
+                            変更する
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">可不可区分 DM</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="dm_flg" value="1">
+                            <span class="form-check-sign"></span>
+                            可
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="dm_flg" value="0">
+                            <span class="form-check-sign"></span>
+                            不可
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">可不可区分 リスト</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="list_flg" value="1">
+                            <span class="form-check-sign"></span>
+                            可
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="list_flg" value="0">
+                            <span class="form-check-sign"></span>
+                            不可
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">可不可区分 TEL</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="tel_flg" value="1">
+                            <span class="form-check-sign"></span>
+                            可
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="tel_flg" value="0">
+                            <span class="form-check-sign"></span>
+                            不可
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">可不可区分 メール</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="mail_flg" value="1">
+                            <span class="form-check-sign"></span>
+                            可
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="mail_flg" value="0">
+                            <span class="form-check-sign"></span>
+                            不可
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    </br>
+                    <h6 class="card-subtitle mb-2 text-muted">車両</h6>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">販売区分</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="sale" value="1">
+                            <span class="form-check-sign"></span>
+                            自己販売
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="0">
+                            <span class="form-check-sign"></span>
+                            自社販売
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="0">
+                            <span class="form-check-sign"></span>
+                            他社販売
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">業直</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="1">
+                            <span class="form-check-sign"></span>
+                            直販
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="0">
+                            <span class="form-check-sign"></span>
+                            業販
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    </br>
+                    <h6 class="card-subtitle mb-2 text-muted">デイリー</h6>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">活動スタッフ</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="0">
+                            <span class="form-check-sign"></span>
+                            変更する
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">活動項目</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="0">
+                            <span class="form-check-sign"></span>
+                            変更する
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">ホットランク</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="0">
+                            <span class="form-check-sign"></span>
+                            A 確定
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="0">
+                            <span class="form-check-sign"></span>
+                            B もうひと押し
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="0">
+                            <span class="form-check-sign"></span>
+                            C 2週間以内に結論
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="0">
+                            <span class="form-check-sign"></span>
+                            D 今月中に結論
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="0">
+                            <span class="form-check-sign"></span>
+                            E 誘致開始
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">活動予定日</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="0">
+                            <span class="form-check-sign"></span>
+                            変更する
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">ステータス</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="0">
+                            <span class="form-check-sign"></span>
+                            変更する
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">接触方法</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="0">
+                            <span class="form-check-sign"></span>
+                            来店
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="0">
+                            <span class="form-check-sign"></span>
+                            訪問
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="0">
+                            <span class="form-check-sign"></span>
+                            TEL発
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="0">
+                            <span class="form-check-sign"></span>
+                            DM
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-2 col-form-label">接触相手</label>
+                      <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="" value="0">
+                            <span class="form-check-sign"></span>
+                            変更する
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer text-center">
+              <input type="hidden" name="m" value="true">
+              <button type="submit" class="btn btn-primary"><span><i class="nc-icon nc-zoom-split"></i></span>　選択した条件で検索する</button>
+              <button type="button" class="btn btn-primary" name=""><span><i class="fa fa-save"></i></span>　この検索条件を保存する(未実装)</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{%block javascript%}
+<script>
+$(document).ready(function() {
+
+  //add active class for selected in side bar
+  $('li.attack_list').addClass('active');
+  $('li.attack_list').children('a').attr('aria-expanded', 'true');
+  $('#attackList').addClass('show');
+  sidebar.addActiveClass("{% url 'gis:refine_search' %}");
+
+  //セレクトボタンかセレクトボックスが選択されたとき
+  $('input[type="checkbox"], select[class="selectpicker"]').on('change', function() {
+    //上限下限Valueのチェック
+    // checkSelectValue();
+    //顧客絞込
+    getSearchCustomer();
+  });
+
+  //検索条件保存ボタンが押されたとき
+  $('button[name="saveSearch"]').on('click', function() {
+    // saveSearchCustomer();
+  });
+
+});
+
+//上限、下限選択が逆転している場合に選択している選択肢を正しく入れなおす処理を書く
+function checkSelectValue() {
+  var last_contact_date_start = $('select[name="last_contact_date_start"]').val(); //最終訪問下限
+  var last_contact_date_end = $('select[name="last_contact_date_end"]').val(); //最終訪問上限
+  var car_registration_date_start = $('select[name="car_registration_date_start"]').val(); //初回登録日下限
+  var car_registration_date_end = $('select[name="car_registration_date_end"]').val(); //初回登録日上限
+
+}
+
+// 選択肢からAjaxにて顧客を絞込
+function getSearchCustomer() {
+  var rank_kinds = [];
+  $('input[name="rank_kinds"]:checked').each(function(){rank_kinds.push(this.value);}); //顧客層
+  var sale_kinds = [];
+  $('input[name="sale_kinds"]:checked').each(function(){sale_kinds.push(this.value);}); //販売形態
+  var inspection_limits = [];
+  $('input[name="inspection_limits"]:checked').each(function(){inspection_limits.push(this.value);}); //車検
+  var car_type = $('select[name="car_type"]').val(); //車種
+  var shops = $('select[name="shops"]').val(); //店舗
+  var last_contact_date = [];
+  last_contact_date.push($('select[name="last_contact_date_start"]').val()); //最終訪問下限
+  last_contact_date.push($('select[name="last_contact_date_end"]').val()); //最終訪問上限
+  var car_registration_date = [];
+  car_registration_date.push($('select[name="car_registration_date_start"]').val()); //初回登録日下限
+  car_registration_date.push($('select[name="car_registration_date_end"]').val()); //初回登録日上限
+  console.log(rank_kinds);
+  console.log(car_type);
+
+  $.ajax({
+    type: "POST",
+    url: "{% url 'gis:search_customer' %}",
+    data: {
+      mylist: "false",
+      rank_kinds: rank_kinds,
+      sale_kinds: sale_kinds,
+      inspection_limits: inspection_limits,
+      car_type: car_type,
+      shops: shops,
+      last_contact_date: last_contact_date,
+      car_registration_date: car_registration_date,
+    },
+    dataType: "json"
+  }).done(function(data) {
+    console.log(data.len);
+    console.log(data.customers);
+    var message = "検索マッチ件数：" + data.len + " 件";
+    demo.showNotification('bottom','right', message);
+  });
+}
+
+//検索条件の保存
+function saveSearchCustomer() {
+  var rank_kinds = [];
+  $('input[name="rank_kinds"]:checked').each(function(){rank_kinds.push(this.value);}); //顧客層
+  var sale_kinds = [];
+  $('input[name="sale_kinds"]:checked').each(function(){sale_kinds.push(this.value);}); //販売形態
+  var inspection_limits = [];
+  $('input[name="inspection_limits"]:checked').each(function(){inspection_limits.push(this.value);}); //車検
+  var car_type = $('select[name="car_type"]').val(); //車種
+  var shops = $('select[name="shops"]').val(); //店舗
+  var last_contact_date = [];
+  last_contact_date.push($('select[name="last_contact_date_start"]').val()); //最終訪問下限
+  last_contact_date.push($('select[name="last_contact_date_end"]').val()); //最終訪問上限
+  var car_registration_date = [];
+  car_registration_date.push($('select[name="car_registration_date_start"]').val()); //初回登録日下限
+  car_registration_date.push($('select[name="car_registration_date_end"]').val()); //初回登録日上限
+  console.log(rank_kinds);
+  console.log(car_type);
+
+  $.ajax({
+    type: "POST",
+    url: "",
+    data: {
+      rank_kinds: rank_kinds,
+      sale_kinds: sale_kinds,
+      inspection_limits: inspection_limits,
+      car_type: car_type,
+      shops: shops,
+      last_contact_date: last_contact_date,
+      car_registration_date: car_registration_date,
+    },
+    dataType: "json"
+  }).done(function() {
+    var message = "検索条件を保存しました。";
+    demo.showNotification('bottom','right', message);
+  });
+}
+
+  
+</script>
+{%endblock javascript%}
