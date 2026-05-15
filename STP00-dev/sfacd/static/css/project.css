@@ -1,0 +1,177 @@
+/* These styles are generated from project.scss. */
+
+.alert-debug {
+  color: black;
+  background-color: white;
+  border-color: #d6e9c6;
+}
+
+.alert-error {
+  color: #b94a48;
+  background-color: #f2dede;
+  border-color: #eed3d7;
+}
+
+/* aaa */
+
+.sidebar:after,
+.off-canvas-sidebar:after {
+  background: #00574b;
+  background: linear-gradient(#00574b 0%, #000 80%);
+  z-index: 3; }
+.sidebar[data-color="main-color"]:after,
+.off-canvas-sidebar[data-color="main-color"]:after {
+  background: #00574b; }
+.sidebar[data-color="main-color"] .nav li a,
+.sidebar[data-color="main-color"] .nav li a i,
+.sidebar[data-color="main-color"] .nav li a[data-toggle="collapse"],
+.sidebar[data-color="main-color"] .nav li a[data-toggle="collapse"] i,
+.sidebar[data-color="main-color"] .nav li a[data-toggle="collapse"] ~ div > ul > li .sidebar-mini-icon,
+.sidebar[data-color="main-color"] .nav li a[data-toggle="collapse"] ~ div > ul > li > a,
+.off-canvas-sidebar[data-color="main-color"] .nav li a,
+.off-canvas-sidebar[data-color="main-color"] .nav li a i,
+.off-canvas-sidebar[data-color="main-color"] .nav li a[data-toggle="collapse"],
+.off-canvas-sidebar[data-color="main-color"] .nav li a[data-toggle="collapse"] i,
+.off-canvas-sidebar[data-color="main-color"] .nav li a[data-toggle="collapse"] ~ div > ul > li .sidebar-mini-icon,
+.off-canvas-sidebar[data-color="main-color"] .nav li a[data-toggle="collapse"] ~ div > ul > li > a {
+  color: #FFFFFF;
+  opacity: .7; }
+.sidebar[data-color="main-color"] .nav li:hover:not(.active) > a,
+.sidebar[data-color="main-color"] .nav li:focus:not(.active) > a,
+.off-canvas-sidebar[data-color="main-color"] .nav li:hover:not(.active) > a,
+.off-canvas-sidebar[data-color="main-color"] .nav li:focus:not(.active) > a {
+  opacity: 1; }
+.sidebar[data-color="main-color"] .logo .simple-text,
+.off-canvas-sidebar[data-color="main-color"] .logo .simple-text {
+  color: #FFFFFF; }
+.sidebar[data-color="main-color"] .logo:after,
+.off-canvas-sidebar[data-color="main-color"] .logo:after {
+  background-color: #FFFFFF;
+  opacity: .4; }
+.sidebar[data-color="main-color"] .user .info a span,
+.sidebar[data-color="main-color"] .user .nav .sidebar-mini-icon,
+.sidebar[data-color="main-color"] .user .nav .sidebar-normal,
+.off-canvas-sidebar[data-color="main-color"] .user .info a span,
+.off-canvas-sidebar[data-color="main-color"] .user .nav .sidebar-mini-icon,
+.off-canvas-sidebar[data-color="main-color"] .user .nav .sidebar-normal {
+  color: #FFFFFF !important; }
+.sidebar[data-color="main-color"] .user:after,
+.off-canvas-sidebar[data-color="main-color"] .user:after {
+  background-color: #FFFFFF;
+  opacity: .4; }
+
+.btn.header-btn {
+  margin: 0 5px;
+}
+
+#legend {
+  background: #fff;
+  padding: 10px;
+  margin: 10px;
+  border: 2px solid #000;
+  width: 13%;
+  max-height: 40%;
+  overflow: auto;
+}
+#legend h6 {
+  margin-top: 0;
+}
+#legend img {
+  vertical-align: middle;
+  height: 15%;
+  width: 15%;
+  position: relative !important;
+}
+#legend div .layer_color {
+  height: 15%;
+  width: 100%;
+}
+
+.legend-hide {
+  display: none !important;
+}
+
+.sidebar .nav li.active div ul li.active a i {
+  color: #fbc658 !important;
+}
+
+.collapse .navbar-nav .nav-link.submit-button {
+  background-color: transparent;
+  border: none;
+  color: #FFFFFF;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+}
+
+div.dropdown-menu.open{
+  max-height: 314px !important;
+  overflow: hidden;
+}
+ul.dropdown-menu.inner{
+  max-height: 260px !important;
+  overflow-y: auto;
+}
+
+table.dataTable tbody tr.selected {
+  background-color: #B0BED9;
+}
+
+#loading {
+  display: table;
+  width: calc(100% - 260px);
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: #fff;
+  opacity: 0.8;
+  z-index: 1051;
+}
+
+#loading .loadingMsg {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 140px;
+  background: url("../images/load.gif") center center no-repeat;
+}
+
+#unit {
+  background: #fff;
+  padding: 10px;
+  margin: 10px;
+  border: 2px solid #000;
+  max-width: 15%;
+  max-height: 40%;
+  overflow: auto;
+}
+
+#unit div {
+  width: 100%;
+}
+
+/* 印刷時のマップデザイン上書き */
+.print-style {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 印刷プレビュー内にレイアウト選択項目が表示されなくなるbootstrap仕様を上書き */
+@page {
+  size: auto!important;
+}
+
+#customerDistribution {
+  padding: 10px;
+  margin: 10px;
+  overflow: auto;
+}
+
+#customerDistribution .table thead tr th {
+  font-size: 11px;
+}
+
+#customerDistribution > .card-customer-distribution {
+  border: 2px solid #000;
+}
