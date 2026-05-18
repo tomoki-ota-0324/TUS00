@@ -1,7 +1,7 @@
 services:
   db:
     image: mysql:8.0
-    container_name: stp00_db
+    container_name: stg_stp00_db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -15,7 +15,7 @@ services:
 
   app:
     build: .
-    container_name: stp00_app
+    container_name: stg_stp00_app
     command: >
       uwsgi
       --socket 0.0.0.0:8001
@@ -29,13 +29,20 @@ services:
       - "8001"
     env_file:
       - .env
+    environment:
+      # AWS認証情報
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=ap-northeast-1
+      # 環境切り替え（stg or prod）
+      - APP_ENV=stg
     depends_on:
       - db
     restart: always
 
   nginx:
     image: nginx:alpine
-    container_name: stp00_nginx
+    container_name: stg_stp00_nginx
     ports:
       - "8100:80"
     volumes:

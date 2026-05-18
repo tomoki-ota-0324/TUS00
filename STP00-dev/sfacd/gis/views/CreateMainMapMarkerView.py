@@ -9,7 +9,15 @@ from sfacd.gis.views.Constant import Constant
 from sfacd.gis.views.MainMapView import MainMapView
 import geojson
 import json
-from distutils.util import strtobool #文字列から真偽値への変換
+# Python 3.13対応：distutils廃止のため自前定義
+def strtobool(val):
+    val = str(val).lower()
+    if val in ('y', 'yes', 't', 'true', 'on', '1'):
+        return 1
+    elif val in ('n', 'no', 'f', 'false', 'off', '0'):
+        return 0
+    else:
+        raise ValueError(f"invalid truth value {val!r}")
 import datetime
 
 

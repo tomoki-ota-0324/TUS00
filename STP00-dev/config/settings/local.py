@@ -1,5 +1,6 @@
 from .base import *  # noqa
 from .base import env
+import os
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -81,14 +82,15 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sfacd',
-        'USER': 'sfacd',
-        'PASSWORD': 'Mysql123!',
-        'HOST': 'stp00_db',
+        'USER': os.environ.get('DB_USER'),         # ← Secret Managerから取得
+        'PASSWORD': os.environ.get('DB_PASSWORD'),  # ← Secret Managerから取得
+        'HOST': 'stg_stp00_db',
         'PORT': '3306',
         'ATOMIC_REQUESTS': True,
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },        
+        },
+
         # LTS end
     }
 }

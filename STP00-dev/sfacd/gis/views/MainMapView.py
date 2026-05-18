@@ -10,8 +10,15 @@ import geojson
 import json
 import datetime
 from dateutil.relativedelta import relativedelta
-from distutils.util import strtobool #文字列から真偽値への変換
-
+# Python 3.13対応：distutils廃止のため自前定義
+def strtobool(val):
+    val = str(val).lower()
+    if val in ('y', 'yes', 't', 'true', 'on', '1'):
+        return 1
+    elif val in ('n', 'no', 'f', 'false', 'off', '0'):
+        return 0
+    else:
+        raise ValueError(f"invalid truth value {val!r}")
 
 class MainMapView(LoginRequiredMixin, TemplateView):
     template_name = "gis/main_map.html"
