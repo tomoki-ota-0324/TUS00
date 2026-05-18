@@ -137,6 +137,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 # STATIC
@@ -232,11 +233,6 @@ ADMINS = [
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
-
-from django.contrib import admin
-from django.contrib.auth.decorators import login_required
-
-admin.site.login = login_required(admin.site.login)
 
 # django-allauth
 # ------------------------------------------------------------------------------
